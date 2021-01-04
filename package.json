@@ -1,0 +1,25 @@
+{
+  "name": "unami",
+  "version": "0.0.1",
+  "description": "A pure Typescript framework for building web applications.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinrossil/unami.git"
+  },
+  "keywords": [
+    "Typescript",
+    "PWA",
+    "CustomElements",
+    "FSM"
+  ],
+  "author": "Martin Rossil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/martinrossil/unami/issues"
+  },
+  "homepage": "https://github.com/martinrossil/unami#readme"
+}
