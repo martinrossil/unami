@@ -2,9 +2,18 @@
   "name": "unami",
   "version": "0.0.1",
   "description": "A pure Typescript framework for building web applications.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint src/**/*",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "rollup -c rollup.development.js --watch",
+    "build": "rollup -c rollup.build.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +30,22 @@
   "bugs": {
     "url": "https://github.com/martinrossil/unami/issues"
   },
-  "homepage": "https://github.com/martinrossil/unami#readme"
+  "homepage": "https://github.com/martinrossil/unami#readme",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^11.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.12.0",
+    "@typescript-eslint/parser": "^4.12.0",
+    "eslint": "^7.17.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "rollup": "^2.35.1",
+    "rollup-plugin-filesize": "^9.1.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-serve": "^1.1.0",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "typescript": "^4.1.3"
+  }
 }
