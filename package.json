@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "lint": "eslint src/**/*",
+    "unit": "karma start --auto-watch=true --single-run=false",
     "test": "karma start",
     "dev": "rollup -c rollup.development.js --watch",
     "build": "rollup -c rollup.build.js"
