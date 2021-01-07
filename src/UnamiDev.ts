@@ -1,11 +1,11 @@
+import SizeElement from './core/SizeElement';
 import IUnamiDev from './IUnamiDev';
 
-export default class UnamiDev extends HTMLElement implements IUnamiDev {
+export default class UnamiDev extends SizeElement implements IUnamiDev {
     public constructor() {
         super();
-        console.log('UnamiDev constructor()');
+        this.name = 'UnamiDev';
+        this.size(200, 200);
     }
-
-    public name = '';
 }
 customElements.define('unami-dev', UnamiDev);

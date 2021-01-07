@@ -1,3 +1,5 @@
-export default interface IUnamiDev {
-    name: string;
+import IBaseElement from './interfaces/core/IBaseElement';
+
+export default interface IUnamiDev extends IBaseElement {
+
 }
