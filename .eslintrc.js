@@ -17,6 +17,7 @@ module.exports = {
         indent: 'off',
         semi: 'off',
         'space-before-function-paren': 'off',
-        '@typescript-eslint/no-empty-interface': 'off'
+        '@typescript-eslint/no-empty-interface': 'off',
+        'prefer-spread': 'off'
     }
 }
