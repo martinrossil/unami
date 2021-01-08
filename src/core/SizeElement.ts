@@ -24,6 +24,10 @@ export default class SizeElement extends PositionElement implements ISizeElement
             this._width = NaN;
             widthChanged = true;
             widthIsNaN = true;
+        } else if (this._width !== width) {
+            this._width = width;
+            this.actualWidth = this._width;
+            widthChanged = true;
         }
         let heightChanged = false;
         let heightIsNaN = false;
@@ -41,6 +45,10 @@ export default class SizeElement extends PositionElement implements ISizeElement
             this._height = NaN;
             heightChanged = true;
             heightIsNaN = true;
+        } else if (this._height !== height) {
+            this._height = height;
+            this.actualHeight = this._height;
+            heightChanged = true;
         }
         if (widthChanged && heightChanged) {
             if (!widthIsNaN && !heightIsNaN) {
@@ -97,6 +105,9 @@ export default class SizeElement extends PositionElement implements ISizeElement
             }
             return;
         }
+        if (this._minWidth === value) {
+            return;
+        }
         this._minWidth = value;
         if (this.width < this._minWidth) {
             this.width = this._minWidth;
@@ -134,6 +145,9 @@ export default class SizeElement extends PositionElement implements ISizeElement
             }
             return;
         }
+        if (this._width === value) {
+            return;
+        }
         this._width = value;
         this.actualWidth = this._width;
         this.widthChanged(this._width);
@@ -159,6 +173,9 @@ export default class SizeElement extends PositionElement implements ISizeElement
             if (this.width > this._maxWidth) {
                 this.width = this._maxWidth;
             }
+            return;
+        }
+        if (this._maxWidth === value) {
             return;
         }
         this._maxWidth = value;
@@ -187,6 +204,9 @@ export default class SizeElement extends PositionElement implements ISizeElement
             if (this.height < this._minHeight) {
                 this.height = this._minHeight;
             }
+            return;
+        }
+        if (this._minHeight === value) {
             return;
         }
         this._minHeight = value;
@@ -226,6 +246,9 @@ export default class SizeElement extends PositionElement implements ISizeElement
             }
             return;
         }
+        if (this._height === value) {
+            return;
+        }
         this._height = value;
         this.actualHeight = this._height;
         this.heightChanged(this._height);
@@ -251,6 +274,9 @@ export default class SizeElement extends PositionElement implements ISizeElement
             if (this.height > this._maxHeight) {
                 this.height = this._maxHeight;
             }
+            return;
+        }
+        if (this._maxHeight === value) {
             return;
         }
         this._maxHeight = value;
@@ -296,6 +322,7 @@ export default class SizeElement extends PositionElement implements ISizeElement
     private _actualWidth = 0;
 
     private set actualWidth(value: number) {
+        // remove _actualWidth and getter?
         this._actualWidth = value;
         this.style.width = this._actualWidth + 'px';
     }
@@ -320,27 +347,31 @@ export default class SizeElement extends PositionElement implements ISizeElement
         let widthChanged = false;
         if (width < this.minWidth) {
             this._internalWidth = this.minWidth;
+            this.actualWidth = this._internalWidth;
             widthChanged = true;
         } else if (width > this.maxWidth) {
             this._internalWidth = this.maxWidth;
+            this.actualWidth = this._internalWidth;
             widthChanged = true;
         } else if (this._internalWidth !== width) {
             this._internalWidth = width;
+            this.actualWidth = this._internalWidth;
             widthChanged = true;
         }
-        this.actualWidth = this._internalWidth;
         let heightChanged = false;
         if (height < this.minHeight) {
             this._internalHeight = this.minHeight;
+            this.actualHeight = this._height;
             heightChanged = true;
         } else if (height > this.maxHeight) {
             this._internalHeight = this.maxHeight;
+            this.actualHeight = this._height;
             heightChanged = true;
         } else if (this._internalHeight !== height) {
-            this._height = height;
+            this._internalHeight = height;
+            this.actualHeight = this._height;
             heightChanged = true;
         }
-        this.actualHeight = this._height;
         if (widthChanged && heightChanged) {
             this.internalSizeChanged(this._internalWidth, this._internalHeight);
             return;
@@ -374,6 +405,9 @@ export default class SizeElement extends PositionElement implements ISizeElement
             }
             return;
         }
+        if (this._internalWidth === value) {
+            return;
+        }
         this._internalWidth = value;
         this.actualWidth = this._width;
         this.internalWidthChanged(this._internalWidth);
@@ -401,6 +435,9 @@ export default class SizeElement extends PositionElement implements ISizeElement
                 this.actualHeight = this._internalHeight;
                 this.internalHeightChanged(this._internalHeight);
             }
+            return;
+        }
+        if (this._internalHeight === value) {
             return;
         }
         this._internalHeight = value;
