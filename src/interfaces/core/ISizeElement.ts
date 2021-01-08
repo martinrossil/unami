@@ -10,4 +10,6 @@ export default interface ISizeElement extends IPositionElement {
     maxHeight: number;
     percentWidth: number;
     percentHeight: number;
+    readonly measuredWidth: number;
+    readonly measuredHeight: number;
 }
