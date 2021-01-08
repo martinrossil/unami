@@ -38,6 +38,38 @@ describe('ISizeElement interface', () => {
             assert.isNaN(sizeElement.percentHeight);
         });
     });
+    describe('given default size, width and height is NaN', () => {
+        it('when when size(NaN, NaN), width and height should be NaN', () => {
+            const sizeElement: ISizeElement = new SizeElement();
+            sizeElement.size(NaN, NaN);
+            assert.isNaN(sizeElement.width);
+            assert.isNaN(sizeElement.height);
+        });
+        it('when when size(-100, -100), width and height should be 0', () => {
+            const sizeElement: ISizeElement = new SizeElement();
+            sizeElement.size(-100, -100);
+            assert.strictEqual(sizeElement.width, 0);
+            assert.strictEqual(sizeElement.height, 0);
+        });
+        it('when when size(-100, NaN), width should be 0 and height should be NaN', () => {
+            const sizeElement: ISizeElement = new SizeElement();
+            sizeElement.size(-100, NaN);
+            assert.strictEqual(sizeElement.width, 0);
+            assert.isNaN(sizeElement.height);
+        });
+        it('when when size(NaN, -100), width should be NaN and height should be 0', () => {
+            const sizeElement: ISizeElement = new SizeElement();
+            sizeElement.size(NaN, -100);
+            assert.isNaN(sizeElement.width);
+            assert.strictEqual(sizeElement.height, 0);
+        });
+        it('when when size(200, 200), width and height should be 200', () => {
+            const sizeElement: ISizeElement = new SizeElement();
+            sizeElement.size(200, 200);
+            assert.strictEqual(sizeElement.width, 200);
+            assert.strictEqual(sizeElement.height, 200);
+        });
+    });
     describe('given minWidth is default', () => {
         it('when minWidth is set to -100, minWidth should be 0', () => {
             const sizeElement: ISizeElement = new SizeElement();
