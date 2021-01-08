@@ -5,16 +5,29 @@ export default class PositionElement extends BaseElement implements IPositionEle
     public constructor() {
         super();
         this.name = 'PositionElement';
+        this.style.position = 'absolute';
     }
 
     public move(x: number, y: number): void {
-        console.log(this.name, 'move(' + x + ', ' + y + ')');
+        this.x = x;
+        this.y = y;
     }
 
     private _x = 0;
 
     public set x(value: number) {
-        console.log(this.name, 'set x =', value);
+        if (this._x === value) {
+            return;
+        }
+        if (isNaN(value)) {
+            if (this._x !== 0) {
+                this._x = 0;
+                this.updateTransform();
+            }
+            return;
+        }
+        this._x = value;
+        this.updateTransform();
     }
 
     public get x(): number {
@@ -24,11 +37,26 @@ export default class PositionElement extends BaseElement implements IPositionEle
     private _y = 0;
 
     public set y(value: number) {
-        console.log(this.name, 'set y =', value);
+        if (this._y === value) {
+            return;
+        }
+        if (isNaN(value)) {
+            if (this._y !== 0) {
+                this._y = 0;
+                this.updateTransform();
+            }
+            return;
+        }
+        this._y = value;
+        this.updateTransform();
     }
 
     public get y(): number {
         return this._y;
+    }
+
+    private updateTransform(): void {
+        this.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)';
     }
 }
 customElements.define('position-element', PositionElement);
