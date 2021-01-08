@@ -317,12 +317,66 @@ export default class SizeElement extends PositionElement implements ISizeElement
 
     protected internalSize(width: number, height: number): void {
         console.log(this.name, 'internalSize(' + width + ', ' + height + ')');
+        let widthChanged = false;
+        if (width < this.minWidth) {
+            this._internalWidth = this.minWidth;
+            widthChanged = true;
+        } else if (width > this.maxWidth) {
+            this._internalWidth = this.maxWidth;
+            widthChanged = true;
+        } else if (this._internalWidth !== width) {
+            this._internalWidth = width;
+            widthChanged = true;
+        }
+        this.actualWidth = this._internalWidth;
+        let heightChanged = false;
+        if (height < this.minHeight) {
+            this._internalHeight = this.minHeight;
+            heightChanged = true;
+        } else if (height > this.maxHeight) {
+            this._internalHeight = this.maxHeight;
+            heightChanged = true;
+        } else if (this._internalHeight !== height) {
+            this._height = height;
+            heightChanged = true;
+        }
+        this.actualHeight = this._height;
+        if (widthChanged && heightChanged) {
+            this.internalSizeChanged(this._internalWidth, this._internalHeight);
+            return;
+        }
+        if (widthChanged && !heightChanged) {
+            this.internalWidthChanged(this._internalWidth);
+            return;
+        }
+        if (!widthChanged && heightChanged) {
+            this.internalHeightChanged(this._internalHeight);
+        }
     }
 
     protected _internalWidth = 0;
 
     protected set internalWidth(value: number) {
         console.log(this.name, 'set internalWidth', value);
+        if (value < this.minWidth) {
+            if (this._internalWidth !== this.minWidth) {
+                this._internalWidth = this.minWidth;
+                this.actualWidth = this._internalWidth;
+                this.internalWidthChanged(this._internalWidth);
+            }
+            return;
+        }
+        if (value > this.maxWidth) {
+            if (this._internalWidth !== this.maxWidth) {
+                this._internalWidth = this.maxWidth;
+                this.actualWidth = this._internalWidth;
+                this.internalWidthChanged(this._internalWidth);
+            }
+            return;
+        }
+        this._internalWidth = value;
+        this.actualWidth = this._width;
+        this.internalWidthChanged(this._internalWidth);
     }
 
     protected get internalWidth(): number {
@@ -333,6 +387,25 @@ export default class SizeElement extends PositionElement implements ISizeElement
 
     protected set internalHeight(value: number) {
         console.log(this.name, 'set internalHeight', value);
+        if (value < this.minHeight) {
+            if (this._internalHeight !== this.minHeight) {
+                this._internalHeight = this.minHeight;
+                this.actualHeight = this._internalHeight;
+                this.internalHeightChanged(this._internalHeight);
+            }
+            return;
+        }
+        if (value > this.maxHeight) {
+            if (this._internalHeight !== this.maxHeight) {
+                this._internalHeight = this.maxHeight;
+                this.actualHeight = this._internalHeight;
+                this.internalHeightChanged(this._internalHeight);
+            }
+            return;
+        }
+        this._internalHeight = value;
+        this.actualHeight = this._height;
+        this.internalHeightChanged(this._internalHeight);
     }
 
     protected get internalHeight(): number {
@@ -361,6 +434,21 @@ export default class SizeElement extends PositionElement implements ISizeElement
 
     protected heightChanged(height: number): void {
         console.log(this.name, 'heightChanged(' + height + ')');
+    }
+
+    protected internalSizeChanged(width: number, height: number): void {
+        console.log(this.name, 'internalSizeChanged(' + width + ', ' + height + ')');
+        // dispatch here?
+    }
+
+    protected internalWidthChanged(width: number): void {
+        console.log(this.name, 'internalWidthChanged(' + width + ')');
+        // dispatch here?
+    }
+
+    protected internalHeightChanged(height: number): void {
+        console.log(this.name, 'internalHeightChanged(' + height + ')');
+        // dispatch here?
     }
 }
 customElements.define('size-element', SizeElement);
