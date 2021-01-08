@@ -365,15 +365,15 @@ export default class SizeElement extends PositionElement implements ISizeElement
         let heightChanged = false;
         if (height < this.minHeight) {
             this._internalHeight = this.minHeight;
-            this.actualHeight = this._height;
+            this.actualHeight = this._internalHeight;
             heightChanged = true;
         } else if (height > this.maxHeight) {
             this._internalHeight = this.maxHeight;
-            this.actualHeight = this._height;
+            this.actualHeight = this._internalHeight;
             heightChanged = true;
         } else if (this._internalHeight !== height) {
             this._internalHeight = height;
-            this.actualHeight = this._height;
+            this.actualHeight = this._internalHeight;
             heightChanged = true;
         }
         if (widthChanged && heightChanged) {
@@ -413,7 +413,7 @@ export default class SizeElement extends PositionElement implements ISizeElement
             return;
         }
         this._internalWidth = value;
-        this.actualWidth = this._width;
+        this.actualWidth = this._internalWidth;
         this.internalWidthChanged(this._internalWidth);
     }
 
@@ -445,12 +445,26 @@ export default class SizeElement extends PositionElement implements ISizeElement
             return;
         }
         this._internalHeight = value;
-        this.actualHeight = this._height;
+        this.actualHeight = this._internalHeight;
         this.internalHeightChanged(this._internalHeight);
     }
 
     protected get internalHeight(): number {
         return this._internalHeight;
+    }
+
+    protected invalidateInternalSize(): void {
+        if (isNaN(this.width) && isNaN(this.height)) {
+            this.updateInternalSize();
+            return;
+        }
+        if (isNaN(this.width) && !isNaN(this.height)) {
+            this.updateInternalWidth();
+            return;
+        }
+        if (!isNaN(this.width) && isNaN(this.height)) {
+            this.updateInternalHeight();
+        }
     }
 
     protected updateInternalSize(): void {
