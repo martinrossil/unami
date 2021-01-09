@@ -22,6 +22,7 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
             this._dc = new DisplayContainer();
             this._dc.name = 'red container';
             this._dc.backgroundColor = new Color(0, 100, 0, 0.5);
+            this._dc.padding = 50;
             this._dc.addElements([this.blue, this.orange]);
             // this._dc.addElement(this.orange);
         }
