@@ -9,10 +9,17 @@ import Color from './vo/Color';
 export default class UnamiDev extends ApplicationElement implements IUnamiDev {
     public constructor() {
         super();
+        console.time('app')
         this.name = 'UnamiDev';
         // hsla(210, 40%, 98%, 1)
         this.backgroundColor = new Color(210, 100, 98);
+        // this.addElement(this.dc);
+    }
+
+    protected invalidate(): void {
         this.addElement(this.dc);
+        // this.dc.padding = 50;
+        console.timeEnd('app');
     }
 
     private _dc!: IDisplayContainer;
@@ -20,11 +27,13 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
     private get dc(): IDisplayContainer {
         if (!this._dc) {
             this._dc = new DisplayContainer();
+            // this._dc.width = 500;
             this._dc.name = 'red container';
-            this._dc.backgroundColor = new Color(0, 100, 0, 0.5);
+            this._dc.backgroundColor = new Color(0, 100, 50, 0.5);
             this._dc.padding = 50;
-            this._dc.addElements([this.blue, this.orange]);
-            // this._dc.addElement(this.orange);
+            this._dc.addElement(this.blue);
+            this._dc.addElement(this.orange);
+            // this._dc.addElements([this.blue, this.orange]);
         }
         return this._dc;
     }
