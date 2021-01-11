@@ -497,7 +497,7 @@ export default class SizeElement extends PositionElement implements ISizeElement
         if (!this.connected) {
             return;
         }
-        this.dispatch('childInternalSizeChanged', this, true);
+        this.dispatch('internalSizeChanged', this, true);
     }
 
     protected internalWidthChanged(): void {
@@ -506,7 +506,7 @@ export default class SizeElement extends PositionElement implements ISizeElement
         if (!this.connected) {
             return;
         }
-        this.dispatch('childInternalSizeChanged', this, true);
+        this.dispatch('internalWidthChanged', this, true);
     }
 
     protected internalHeightChanged(): void {
@@ -515,7 +515,7 @@ export default class SizeElement extends PositionElement implements ISizeElement
         if (!this.connected) {
             return;
         }
-        this.dispatch('childInternalSizeChanged', this, true);
+        this.dispatch('internalHeightChanged', this, true);
     }
 }
 customElements.define('size-element', SizeElement);

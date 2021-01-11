@@ -6,16 +6,18 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
     public constructor() {
         super();
         this.name = 'DisplayContainer';
-        this.addEventListener('childInternalSizeChanged', this.childInternalSizeChanged);
+        this.addEventListener('internalSizeChanged', this.childInternalsChanged);
+        this.addEventListener('internalWidthChanged', this.childInternalsChanged);
+        this.addEventListener('internalHeightChanged', this.childInternalsChanged);
     }
 
-    protected childInternalSizeChanged(e: Event): void {
-        console.log(this.name, 'childInternalSizeChanged()');
+    protected childInternalsChanged(e: Event): void {
         if (e.target === this) {
             return;
         }
+        console.log(this.name, 'childInternalSizeChanged()');
         e.stopImmediatePropagation();
-        this.updateLayout(this.measuredWidth, this.measuredHeight);
+        this.invalidateInternalSize();
     }
 
     private elements: IDisplayElement[] = [];
