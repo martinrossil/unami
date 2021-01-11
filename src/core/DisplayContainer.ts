@@ -6,11 +6,22 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
     public constructor() {
         super();
         this.name = 'DisplayContainer';
+        this.addEventListener('childInternalSizeChanged', this.childInternalSizeChanged);
+    }
+
+    protected childInternalSizeChanged(e: Event): void {
+        console.log(this.name, 'childInternalSizeChanged()');
+        if (e.target === this) {
+            return;
+        }
+        e.stopImmediatePropagation();
+        this.updateLayout(this.measuredWidth, this.measuredHeight);
     }
 
     private elements: IDisplayElement[] = [];
 
     public addElement(element: IDisplayElement): void {
+        console.log(this.name, 'addElement', element.name);
         this.elements.push(element);
         this.appendChild(element as unknown as Node);
         this.invalidateInternalSize();
@@ -37,24 +48,85 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
             if (height < element.measuredHeight) {
                 height = element.measuredHeight;
             }
-            element.x = this.paddingLeft;
-            element.y = this.paddingTop;
         }
         width = this.paddingLeft + width + this.paddingRight;
         height = this.paddingTop + height + this.paddingBottom;
         this.internalSize(width, height);
     }
 
+    protected updateInternalWidth(): void {
+        super.updateInternalWidth();
+        let width = 0;
+        for (const element of this.elements) {
+            if (width < element.measuredWidth) {
+                width = element.measuredWidth;
+            }
+        }
+        width = this.paddingLeft + width + this.paddingRight;
+        this.internalWidth = width;
+    }
+
+    protected updateInternalHeight(): void {
+        super.updateInternalHeight();
+        let height = 0;
+        for (const element of this.elements) {
+            if (height < element.measuredHeight) {
+                height = element.measuredHeight;
+            }
+        }
+        height = this.paddingTop + height + this.paddingBottom;
+        this.internalHeight = height;
+    }
+
+    protected sizeChanged(): void {
+        super.sizeChanged();
+        this.updateLayout(this.measuredWidth, this.measuredHeight);
+    }
+
+    protected widthChanged(): void {
+        super.widthChanged();
+        this.updateLayout(this.measuredWidth, this.measuredHeight);
+    }
+
+    protected heightChanged(): void {
+        this.heightChanged();
+        this.updateLayout(this.measuredWidth, this.measuredHeight);
+    }
+
+    protected internalSizeChanged(): void {
+        super.internalSizeChanged();
+        this.updateLayout(this.measuredWidth, this.measuredHeight);
+    }
+
+    protected internalWidthChanged(): void {
+        super.internalWidthChanged();
+        this.updateLayout(this.measuredWidth, this.measuredHeight);
+    }
+
+    protected internalHeightChanged(): void {
+        super.internalHeightChanged();
+        this.updateLayout(this.measuredWidth, this.measuredHeight);
+    }
+
+    protected updateLayout(width: number, height: number): void {
+        console.log(this.name, 'updateLayout(' + width + ', ' + height + ')');
+        for (const element of this.elements) {
+            element.x = this.paddingLeft;
+            element.y = this.paddingTop;
+        }
+    }
+
     private _padding = 0;
 
     public set padding(value: number) {
+        console.log(this.name, 'set padding', value);
         if (isNaN(value) || value < 0) {
             this._padding = 0;
             this._paddingLeft = 0;
             this._paddingTop = 0;
             this._paddingRight = 0;
             this._paddingBottom = 0;
-            // this.notify();
+            this.invalidateInternalSize();
             return;
         }
         this._padding = value;
@@ -62,7 +134,7 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
         this._paddingRight = value;
         this._paddingBottom = value;
         this._paddingLeft = value;
-        // this.notify();
+        this.invalidateInternalSize();
     }
 
     public get padding(): number {
@@ -78,12 +150,12 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
         if (isNaN(value) || value < 0) {
             if (this._paddingTop !== 0) {
                 this._paddingTop = 0;
-                // this.notify();
+                this.invalidateInternalSize();
             }
             return;
         }
         this._paddingTop = value;
-        // this.notify();
+        this.invalidateInternalSize();
     }
 
     public get paddingTop(): number {
@@ -96,12 +168,12 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
         if (isNaN(value) || value < 0) {
             if (this._paddingRight !== 0) {
                 this._paddingRight = 0;
-                // this.notify();
+                this.invalidateInternalSize();
             }
             return;
         }
         this._paddingRight = value;
-        // this.notify();
+        this.invalidateInternalSize();
     }
 
     public get paddingRight(): number {
@@ -114,12 +186,12 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
         if (isNaN(value) || value < 0) {
             if (this._paddingBottom !== 0) {
                 this._paddingBottom = 0;
-                // this.notify();
+                this.invalidateInternalSize();
             }
             return;
         }
         this._paddingBottom = value;
-        // this.notify();
+        this.invalidateInternalSize();
     }
 
     public get paddingBottom(): number {
@@ -135,12 +207,12 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
         if (isNaN(value) || value < 0) {
             if (this._paddingLeft !== 0) {
                 this._paddingLeft = 0;
-                // this.notify();
+                this.invalidateInternalSize();
             }
             return;
         }
         this._paddingLeft = value;
-        // this.notify();
+        this.invalidateInternalSize();
     }
 
     public get paddingLeft(): number {
