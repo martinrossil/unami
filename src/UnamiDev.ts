@@ -13,11 +13,16 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         this.name = 'UnamiDev';
         // hsla(210, 40%, 98%, 1)
         this.backgroundColor = new Color(210, 100, 98);
-        // this.addElement(this.dc);
+        this.addElement(this.dc);
+        window.addEventListener('click', () => {
+            console.time('app')
+            this.dc.padding += 5;
+            console.timeEnd('app')
+        });
     }
 
     protected invalidate(): void {
-        this.addElement(this.dc);
+        // this.addElement(this.dc);
         // this.dc.padding = 50;
         console.timeEnd('app');
     }
@@ -27,7 +32,7 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
     private get dc(): IDisplayContainer {
         if (!this._dc) {
             this._dc = new DisplayContainer();
-            // this._dc.width = 500;
+            this._dc.width = 500;
             this._dc.name = 'red container';
             this._dc.backgroundColor = new Color(0, 100, 50, 0.5);
             this._dc.padding = 50;
