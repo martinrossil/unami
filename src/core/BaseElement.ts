@@ -4,6 +4,7 @@ export default class BaseElement extends HTMLElement implements IBaseElement {
     public constructor() {
         super();
         this.name = 'BaseElement';
+        this.invalidate = this.invalidate.bind(this);
     }
 
     public dispatch<Item>(typeArg: string, payload: Item | null = null, bubbles = false): void {
@@ -16,7 +17,7 @@ export default class BaseElement extends HTMLElement implements IBaseElement {
 
     private connectedCallback(): void {
         this.connected = true;
-        this.invalidate();
+        this.validate();
     }
 
     private disconnectedCallback(): void {
@@ -24,7 +25,13 @@ export default class BaseElement extends HTMLElement implements IBaseElement {
     }
 
     protected invalidate(): void {
-        console.log(this.name, 'invalidate()');
+        if (this.connected) {
+            this.validate();
+        }
+    }
+
+    protected validate(): void {
+        // override
     }
 }
 customElements.define('base-element', BaseElement);
