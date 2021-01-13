@@ -1,7 +1,7 @@
 import ISize from '../interfaces/vo/ISize';
 
 export default class Size implements ISize {
-    public constructor(width: number, height: number) {
+    public constructor(width = 0, height = 0) {
         this.width = width;
         this.height = height;
     }
