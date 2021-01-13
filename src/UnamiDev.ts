@@ -4,7 +4,7 @@ import DisplayElement from './core/DisplayElement';
 import IDisplayContainer from './interfaces/core/IDisplayContainer';
 import IDisplayElement from './interfaces/core/IDisplayElement';
 import IUnamiDev from './IUnamiDev';
-import VerticalLayout from './layout/VerticalLayout';
+import HorizontalLayout from './layout/HorizontalLayout';
 import Color from './vo/Color';
 
 export default class UnamiDev extends ApplicationElement implements IUnamiDev {
@@ -19,12 +19,12 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         this.backgroundColor = new Color(210, 100, 98);
         // this.addElement(this.dc);
         window.addEventListener('click', () => {
-            console.time('app');
+            console.time('padding');
             this.dc.padding += 5;
             // this.black.percentWidth += 5;
             // this.black.percentHeight += 5;
             // console.log('click', this.black.percentWidth);
-            console.timeEnd('app')
+            console.timeEnd('padding')
         });
     }
 
@@ -47,9 +47,9 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
             this._dc.percentWidth = 95;
             this._dc.percentHeight = 95;
             this._dc.name = 'red container';
-            this._dc.layout = new VerticalLayout(20, 'middle', 'center');
+            this._dc.layout = new HorizontalLayout(10, 'center', 'fill');
             this._dc.backgroundColor = new Color(0, 100, 50, 0.5);
-            this._dc.padding = 50;
+            this._dc.padding = 10;
             // this._dc.addElement(this.blue);
             // this._dc.addElement(this.orange);
             this._dc.addElements([this.blue, this.orange, this.black]);
@@ -66,7 +66,7 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
             // this._blue.height = 50;
             // this._blue.percentWidth = 100;
             // this._blue.maxWidth = 150;
-            this._blue.size(100, 100);
+            this._blue.size(150, 150);
             this._blue.backgroundColor = new Color(210, 100, 50, 0.5);
         }
         return this._blue;
@@ -79,9 +79,9 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
             this._orange = new DisplayElement();
             this._orange.name = 'orange';
             // this._orange.size(100, 100);
-            this._orange.width = 150;
+            this._orange.height = 150;
+            this._orange.percentWidth = 100;
             // this._orange.percentWidth = 100;
-            this._orange.percentHeight = 100;
             this._orange.backgroundColor = new Color(29, 100, 50, 0.5);
         }
         return this._orange;
