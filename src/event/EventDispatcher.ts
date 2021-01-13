@@ -14,7 +14,7 @@ export default class EventDispatcher implements IEventDispatcher {
         return true;
     }
 
-    public dispatchCustomEvent<Item>(type: string, payload: Item | undefined = undefined): void {
+    public dispatch<Item>(type: string, payload: Item | undefined = undefined): void {
         const typeListeners: IEventListener[] | undefined = this.listeners.get(type);
         if (typeListeners !== undefined) {
             const customEvent: CustomEvent<Item> = new CustomEvent<Item>(type, { detail: payload });
