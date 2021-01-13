@@ -1,3 +1,4 @@
+import ILayout from '../layout/ILayout';
 import IDisplayElement from './IDisplayElement';
 
 export default interface IDisplayContainer extends IDisplayElement {
@@ -8,4 +9,5 @@ export default interface IDisplayContainer extends IDisplayElement {
     paddingTop: number;
     paddingRight: number;
     paddingBottom: number;
+    layout: ILayout;
 }
