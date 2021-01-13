@@ -14,7 +14,6 @@ export default class AbsoluteLayout extends EventDispatcher implements ILayout {
     public updateChildrenSizes(container: IDisplayContainer, elements: Array<IDisplayElement>): void {
         const insideWidth = container.measuredWidth - container.paddingLeft - container.paddingRight;
         const insideHeight = container.measuredHeight - container.paddingTop - container.paddingBottom;
-        console.log(container.name, 'updateChildrenSizes()');
         for (const element of elements) {
             if (!isNaN(element.percentWidth) && !isNaN(element.percentHeight)) {
                 element.size(insideWidth * element.percentWidth / 100, insideHeight * element.percentHeight / 100);
@@ -27,7 +26,6 @@ export default class AbsoluteLayout extends EventDispatcher implements ILayout {
     }
 
     public updateLayout(container: IDisplayContainer, elements: Array<IDisplayElement & IPositionElement>): void {
-        console.log(container.name, 'updateLayout()');
         for (const element of elements) {
             element.x = container.paddingLeft;
             element.y = container.paddingTop;
