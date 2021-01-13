@@ -1,6 +1,6 @@
-import IPositionElement from './IPositionElement';
+import IBaseElement from './IBaseElement';
 
-export default interface ISizeElement extends IPositionElement {
+export default interface ISizeElement extends IBaseElement {
     size(width: number, height: number): void;
     minWidth: number;
     width: number;
