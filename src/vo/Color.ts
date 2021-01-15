@@ -6,7 +6,7 @@ export default class Color extends EventDispatcher implements IColor {
     public constructor(hue = 0, saturation = 0, lightness = 0, opacity = 1.0) {
         super();
         if (this._hue !== hue) {
-            if (isNaN(hue) || hue < 0 || hue > 360) {
+            if (isNaN(hue) || hue < 0 || hue >= 360) {
                 this._hue = 0;
             } else {
                 this._hue = hue;
@@ -47,7 +47,7 @@ export default class Color extends EventDispatcher implements IColor {
         if (this._hue === value) {
             return;
         }
-        if (isNaN(value) || value < 0 || value > 360) {
+        if (isNaN(value) || value < 0 || value >= 360) {
             if (this._hue !== 0) {
                 this._hue = 0;
                 this.notify();
