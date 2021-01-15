@@ -55,15 +55,18 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
     }
 
     protected updateInternalSize(): void {
+        // super.updateInternalSize();
         const size: ISize = this.layout.getInternalSize(this, this.elements);
         this.internalSize(size.width, size.height);
     }
 
     protected updateInternalWidth(): void {
+        // super.updateInternalWidth();
         this.internalWidth = this.layout.getInternalWidth(this, this.elements);
     }
 
     protected updateInternalHeight(): void {
+        // super.updateInternalHeight();
         this.internalHeight = this.layout.getInternalHeight(this, this.elements);
     }
 
