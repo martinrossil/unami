@@ -11,6 +11,7 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
         this.backgroundColorChanged = this.backgroundColorChanged.bind(this);
         this.style.border = 'none';
         this.style.outline = 'none';
+        this.style.boxSizing = 'border-box';
     }
 
     private backgroundColorChanged(): void {
@@ -46,6 +47,27 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
 
     public get backgroundColor(): IColor | ILinearGradient | null {
         return this._backgroundColor;
+    }
+
+    protected _cornerSize = 0;
+
+    public set cornerSize(value: number) {
+        if (this._cornerSize === value) {
+            return;
+        }
+        if (isNaN(value) || value < 0) {
+            if (this._cornerSize !== 0) {
+                this._cornerSize = 0;
+                this.style.borderRadius = '0';
+            }
+            return;
+        }
+        this._cornerSize = value;
+        this.style.borderRadius = this._cornerSize + 'px';
+    }
+
+    public get cornerSize(): number {
+        return this._cornerSize;
     }
 }
 customElements.define('display-element', DisplayElement);
