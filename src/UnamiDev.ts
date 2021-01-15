@@ -5,10 +5,13 @@ import ScrollContainer from './core/ScrollContainer';
 import IDisplayContainer from './interfaces/core/IDisplayContainer';
 import IDisplayElement from './interfaces/core/IDisplayElement';
 import IScrollContainer from './interfaces/core/IScrollContainer';
+import IColor from './interfaces/vo/IColor';
+import ILinearGradient from './interfaces/vo/ILinearGradient';
 import IUnamiDev from './IUnamiDev';
 import HorizontalLayout from './layout/HorizontalLayout';
 import VerticalLayout from './layout/VerticalLayout';
 import Color from './vo/Color';
+import LinearGradient from './vo/LinearGradient';
 
 export default class UnamiDev extends ApplicationElement implements IUnamiDev {
     public constructor() {
@@ -19,8 +22,21 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         // this.layout = new VerticalLayout();
         window.addEventListener('load', this.loadComplete);
         // hsla(210, 40%, 98%, 1)
-        this.backgroundColor = new Color(210, 100, 98);
+        // this.backgroundColor = new Color(210, 100, 50);
         // this.addElement(this.dc);
+        const red: IColor = new Color(0, 100, 50);
+        const yellow: IColor = new Color(46, 125, 50, 4);
+        const blue: IColor = new Color(210, 125, 50, 4);
+        const lg: ILinearGradient = new LinearGradient(135, [red, yellow]);
+        this.backgroundColor = lg;
+        window.addEventListener('click', () => {
+            // lg.degrees += 45;
+            // red.hue += 10;
+            // yellow.hue += 10;
+            /// red.opacity -= 0.05;
+            // lg.addColor(blue);
+            this.backgroundColor = blue;
+        });
     }
 
     private loadComplete(): void {
@@ -29,7 +45,7 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         console.timeEnd('app');
         console.time('app');
         // this.addElement(this.dc);
-        this.addElement(this.scrollContainer);
+        // this.addElement(this.scrollContainer);
         console.timeEnd('app');
     }
 
