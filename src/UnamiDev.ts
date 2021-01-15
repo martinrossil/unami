@@ -1,10 +1,13 @@
 import ApplicationElement from './core/ApplicationElement';
 import DisplayContainer from './core/DisplayContainer';
 import DisplayElement from './core/DisplayElement';
+import ScrollContainer from './core/ScrollContainer';
 import IDisplayContainer from './interfaces/core/IDisplayContainer';
 import IDisplayElement from './interfaces/core/IDisplayElement';
+import IScrollContainer from './interfaces/core/IScrollContainer';
 import IUnamiDev from './IUnamiDev';
 import HorizontalLayout from './layout/HorizontalLayout';
+import VerticalLayout from './layout/VerticalLayout';
 import Color from './vo/Color';
 
 export default class UnamiDev extends ApplicationElement implements IUnamiDev {
@@ -18,14 +21,6 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         // hsla(210, 40%, 98%, 1)
         this.backgroundColor = new Color(210, 100, 98);
         // this.addElement(this.dc);
-        window.addEventListener('click', () => {
-            console.time('padding');
-            this.dc.padding += 5;
-            // this.black.percentWidth += 5;
-            // this.black.percentHeight += 5;
-            // console.log('click', this.black.percentWidth);
-            console.timeEnd('padding')
-        });
     }
 
     private loadComplete(): void {
@@ -33,8 +28,27 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         console.log('loadComplete');
         console.timeEnd('app');
         console.time('app');
-        this.addElement(this.dc);
+        // this.addElement(this.dc);
+        this.addElement(this.scrollContainer);
         console.timeEnd('app');
+    }
+
+    private _scrollContainer!: IScrollContainer;
+
+    private get scrollContainer(): IScrollContainer {
+        if (!this._scrollContainer) {
+            this._scrollContainer = new ScrollContainer();
+            this._scrollContainer.size(250, 400);
+            // this._scrollContainer.height = 400;
+            // this._scrollContainer.width = 250;
+            // this._scrollContainer.scrollEnabled = true;
+            // this._scrollContainer.verticalScrollEnabled = false;
+            this._scrollContainer.layout = new VerticalLayout(20);
+            this._scrollContainer.padding = 20;
+            this._scrollContainer.backgroundColor = new Color(0, 100, 50, 0.5);
+            this._scrollContainer.addElements([this.blue, this.orange, this.black]);
+        }
+        return this._scrollContainer;
     }
 
     private _dc!: IDisplayContainer;
@@ -66,7 +80,7 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
             // this._blue.height = 50;
             // this._blue.percentWidth = 100;
             // this._blue.maxWidth = 150;
-            this._blue.size(150, 150);
+            this._blue.size(250, 250);
             this._blue.backgroundColor = new Color(210, 100, 50, 0.5);
         }
         return this._blue;
@@ -78,9 +92,9 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         if (!this._orange) {
             this._orange = new DisplayElement();
             this._orange.name = 'orange';
-            // this._orange.size(100, 100);
-            this._orange.height = 150;
-            this._orange.percentWidth = 100;
+            this._orange.size(200, 200);
+            // this._orange.height = 150;
+            // this._orange.percentWidth = 100;
             // this._orange.percentWidth = 100;
             this._orange.backgroundColor = new Color(29, 100, 50, 0.5);
         }
@@ -96,7 +110,7 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
             // this._black.minWidth = 100;
             // this._black.percentWidth = 50;
             // this._black.percentHeight = 50;
-            this._black.size(100, 100);
+            this._black.size(150, 150);
             this._black.backgroundColor = new Color(0, 0, 0, 0.5);
         }
         return this._black;
