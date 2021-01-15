@@ -9,12 +9,12 @@ import { VerticalAlign } from '../types/VerticalAlign';
 import Size from '../vo/Size';
 
 export default class VerticalLayout extends EventDispatcher implements IVerticalLayout {
-    public constructor(verticalGap = 0, verticalAlign: VerticalAlign = 'top', horizontalAlign: HorizontalAlign = 'left') {
+    public constructor(verticalGap = 0, horizontalAlign: HorizontalAlign = 'left', verticalAlign: VerticalAlign = 'top') {
         super();
         this.name = 'VerticalLayout';
         this.verticalGap = verticalGap;
-        this.verticalAlign = verticalAlign;
         this.horizontalAlign = horizontalAlign;
+        this.verticalAlign = verticalAlign;
     }
 
     public updateChildrenSizes(container: IDisplayContainer, elements: Array<IDisplayElement>): void {
