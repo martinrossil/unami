@@ -5,6 +5,7 @@ export default class Color extends EventDispatcher implements IColor {
     public static NONE = '';
     public constructor(hue = 0, saturation = 0, lightness = 0, opacity = 1.0) {
         super();
+        this.name = 'Color';
         if (this._hue !== hue) {
             if (isNaN(hue) || hue < 0 || hue >= 360) {
                 this._hue = 0;

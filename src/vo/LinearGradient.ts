@@ -5,6 +5,7 @@ import ILinearGradient from '../interfaces/vo/ILinearGradient';
 export default class LinearGradient extends EventDispatcher implements ILinearGradient {
     public constructor(degrees = 0, colors: Array<IColor> = []) {
         super();
+        this.name = 'LinearGradient';
         this.colorChanged = this.colorChanged.bind(this);
         if (this._degrees !== degrees) {
             if (isNaN(degrees) || degrees < 0 || degrees > 360) {
