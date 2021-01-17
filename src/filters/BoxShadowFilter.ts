@@ -14,7 +14,7 @@ export default class BoxShadowFilter extends EventDispatcher implements IBoxShad
         if (!isNaN(y)) {
             this._y = y;
         }
-        if (!isNaN(blur)) {
+        if (!isNaN(blur) && blur > 0) {
             this._blur = blur;
         }
         if (!isNaN(spread)) {
