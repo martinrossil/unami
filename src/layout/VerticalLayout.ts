@@ -1,7 +1,7 @@
 import EventDispatcher from '../event/EventDispatcher';
 import IDisplayContainer from '../interfaces/core/IDisplayContainer';
-import IDisplayElement from '../interfaces/core/IDisplayElement';
 import IPositionElement from '../interfaces/core/IPositionElement';
+import ISizeElement from '../interfaces/core/ISizeElement';
 import IVerticalLayout from '../interfaces/layout/IVerticalLayout';
 import ISize from '../interfaces/vo/ISize';
 import { HorizontalAlign } from '../types/HorizontalAlign';
@@ -17,7 +17,7 @@ export default class VerticalLayout extends EventDispatcher implements IVertical
         this.verticalAlign = verticalAlign;
     }
 
-    public updateChildrenSizes(container: IDisplayContainer, elements: Array<IDisplayElement>): void {
+    public updateChildrenSizes(container: IDisplayContainer, elements: Array<ISizeElement>): void {
         let heightSum = 0;
         let percentHeightSum = 0;
         for (const element of elements) {
@@ -58,7 +58,7 @@ export default class VerticalLayout extends EventDispatcher implements IVertical
         }
     }
 
-    public updateLayout(container: IDisplayContainer, elements: Array<IDisplayElement & IPositionElement>): void {
+    public updateLayout(container: IDisplayContainer, elements: Array<ISizeElement & IPositionElement>): void {
         if (this.horizontalAlign === 'left') {
             this.layoutElementsLeft(container, elements);
             return;
@@ -70,7 +70,7 @@ export default class VerticalLayout extends EventDispatcher implements IVertical
         this.layoutElementsCenter(container, elements);
     }
 
-    private getVerticalYStartValue(container: IDisplayContainer, elements: IDisplayElement[]): number {
+    private getVerticalYStartValue(container: IDisplayContainer, elements: ISizeElement[]): number {
         let y = container.paddingTop;
         if (this.verticalAlign === 'middle' || this.verticalAlign === 'bottom') {
             const actualHeight = container.measuredHeight - container.paddingTop - container.paddingBottom;
@@ -88,7 +88,7 @@ export default class VerticalLayout extends EventDispatcher implements IVertical
         return y;
     }
 
-    private layoutElementsLeft(container: IDisplayContainer, elements: Array<IDisplayElement & IPositionElement>): void {
+    private layoutElementsLeft(container: IDisplayContainer, elements: Array<ISizeElement & IPositionElement>): void {
         let y = this.getVerticalYStartValue(container, elements);
         for (const element of elements) {
             element.move(container.paddingLeft, y);
@@ -96,7 +96,7 @@ export default class VerticalLayout extends EventDispatcher implements IVertical
         }
     }
 
-    private layoutElementsCenter(container: IDisplayContainer, elements: Array<IDisplayElement & IPositionElement>): void {
+    private layoutElementsCenter(container: IDisplayContainer, elements: Array<ISizeElement & IPositionElement>): void {
         let x = 0;
         let y = this.getVerticalYStartValue(container, elements);
         for (const element of elements) {
@@ -106,7 +106,7 @@ export default class VerticalLayout extends EventDispatcher implements IVertical
         }
     }
 
-    private layoutElementsRight(container: IDisplayContainer, elements: Array<IDisplayElement & IPositionElement>): void {
+    private layoutElementsRight(container: IDisplayContainer, elements: Array<ISizeElement & IPositionElement>): void {
         let x = 0;
         let y = this.getVerticalYStartValue(container, elements);
         for (const element of elements) {
@@ -116,7 +116,7 @@ export default class VerticalLayout extends EventDispatcher implements IVertical
         }
     }
 
-    public getInternalSize(container: IDisplayContainer, elements: Array<IDisplayElement & IPositionElement>): ISize {
+    public getInternalSize(container: IDisplayContainer, elements: Array<ISizeElement & IPositionElement>): ISize {
         let width = 0;
         let height = 0;
         for (const element of elements) {
@@ -130,7 +130,7 @@ export default class VerticalLayout extends EventDispatcher implements IVertical
         return new Size(width, height);
     }
 
-    public getInternalWidth(container: IDisplayContainer, elements: Array<IDisplayElement>): number {
+    public getInternalWidth(container: IDisplayContainer, elements: Array<ISizeElement>): number {
         let width = 0;
         for (const element of elements) {
             if (width < element.measuredWidth) {
@@ -140,7 +140,7 @@ export default class VerticalLayout extends EventDispatcher implements IVertical
         return container.paddingLeft + width + container.paddingRight;
     }
 
-    public getInternalHeight(container: IDisplayContainer, elements: Array<IDisplayElement>): number {
+    public getInternalHeight(container: IDisplayContainer, elements: Array<ISizeElement>): number {
         let height = 0;
         for (const element of elements) {
             height += element.measuredHeight + this.verticalGap;

@@ -1,6 +1,7 @@
 import IDisplayContainer from '../interfaces/core/IDisplayContainer';
 import IDisplayElement from '../interfaces/core/IDisplayElement';
 import IPositionElement from '../interfaces/core/IPositionElement';
+import ISizeElement from '../interfaces/core/ISizeElement';
 import ILayout from '../interfaces/layout/ILayout';
 import ISize from '../interfaces/vo/ISize';
 import AbsoluteLayout from '../layout/AbsoluteLayout';
@@ -36,7 +37,7 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
         this.invalidate();
     }
 
-    private elements: Array<IDisplayElement & IPositionElement> = [];
+    private elements: Array<ISizeElement & IPositionElement> = [];
 
     public addElement(element: IDisplayElement): void {
         this.elements.push(element as IDisplayElement & IPositionElement);
