@@ -1,5 +1,4 @@
 import IDisplayContainer from '../interfaces/core/IDisplayContainer';
-import IDisplayElement from '../interfaces/core/IDisplayElement';
 import IPositionElement from '../interfaces/core/IPositionElement';
 import ISizeElement from '../interfaces/core/ISizeElement';
 import ILayout from '../interfaces/layout/ILayout';
@@ -39,16 +38,16 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
 
     private elements: Array<ISizeElement & IPositionElement> = [];
 
-    public addElement(element: IDisplayElement): void {
-        this.elements.push(element as IDisplayElement & IPositionElement);
+    public addElement(element: ISizeElement): void {
+        this.elements.push(element as ISizeElement & IPositionElement);
         this.appendChild(element as unknown as Node);
         this.invalidate();
     }
 
-    public addElements(elements: Array<IDisplayElement>): void {
+    public addElements(elements: Array<ISizeElement>): void {
         const frag: DocumentFragment = document.createDocumentFragment();
         for (const element of elements) {
-            this.elements.push(element as IDisplayElement & IPositionElement);
+            this.elements.push(element as ISizeElement & IPositionElement);
             frag.appendChild(element as unknown as Node);
         }
         this.appendChild(frag);
