@@ -37,6 +37,7 @@ export default class LinearGradient extends EventDispatcher implements ILinearGr
     public addColors(value: Array<IColor>): void {
         for (const color of value) {
             this.colors.push(color);
+            color.addEventListener('invalidate', this.colorChanged);
         }
         if (value.length > 0) {
             this.notify();
