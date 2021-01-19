@@ -1,8 +1,8 @@
 import ISurfaceElement from '../interfaces/svg/ISurfaceElement';
 import { CornerType } from '../types/CornerType';
-import SvgElement from './SvgElement';
+import PathElement from './PathElement';
 
-export default class SurfaceElement extends SvgElement implements ISurfaceElement {
+export default class SurfaceElement extends PathElement implements ISurfaceElement {
     public constructor() {
         super();
         this.name = 'SurfaceElement';
@@ -21,6 +21,39 @@ export default class SurfaceElement extends SvgElement implements ISurfaceElemen
             return;
         }
         this.path.setAttribute('d', this.getCutData());
+    }
+
+    private _cornerSize = 0;
+
+    public set cornerSize(value: number) {
+        if (this._cornerSize === value) {
+            return;
+        }
+        if (isNaN(value) || value < 0) {
+            this._cornerSize = 0;
+            this.invalidate();
+            return;
+        }
+        this._cornerSize = value;
+        this.invalidate();
+    }
+
+    public get cornerSize(): number {
+        return this._cornerSize;
+    }
+
+    private _cornerType: CornerType = 'round';
+
+    public set cornerType(value: CornerType) {
+        if (this._cornerType === value) {
+            return;
+        }
+        this._cornerType = value;
+        this.invalidate();
+    }
+
+    public get cornerType(): CornerType {
+        return this._cornerType;
     }
 
     private getCutData(): string {
@@ -71,48 +104,6 @@ export default class SurfaceElement extends SvgElement implements ISurfaceElemen
         // close path
         d += 'Z';
         return d;
-    }
-
-    private _cornerSize = 0;
-
-    public set cornerSize(value: number) {
-        if (this._cornerSize === value) {
-            return;
-        }
-        if (isNaN(value) || value < 0) {
-            this._cornerSize = 0;
-            this.invalidate();
-            return;
-        }
-        this._cornerSize = value;
-        this.invalidate();
-    }
-
-    public get cornerSize(): number {
-        return this._cornerSize;
-    }
-
-    private _cornerType: CornerType = 'round';
-
-    public set cornerType(value: CornerType) {
-        if (this._cornerType === value) {
-            return;
-        }
-        this._cornerType = value;
-        this.invalidate();
-    }
-
-    public get cornerType(): CornerType {
-        return this._cornerType;
-    }
-
-    private _path!: SVGPathElement;
-
-    private get path(): SVGPathElement {
-        if (!this._path) {
-            this._path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        }
-        return this._path;
     }
 }
 customElements.define('surface-element', SurfaceElement);

@@ -1,4 +1,6 @@
 import SizeElement from '../core/SizeElement';
+import BlurFilter from '../filters/BlurFilter';
+import ShadowFilter from '../filters/ShadowFilter';
 import ISvgElement from '../interfaces/svg/ISvgElement';
 import IRectangle from '../interfaces/vo/IRectangle';
 
@@ -14,9 +16,13 @@ export default class SvgElement extends SizeElement implements ISvgElement {
         this.updateSvgAttributes();
     }
 
-    protected updateSvgAttributes(): void {
+    private updateSvgAttributes(): void {
         this.svg.setAttribute('width', this.measuredWidth.toString());
         this.svg.setAttribute('height', this.measuredHeight.toString());
+    }
+
+    public addFilter(value: BlurFilter | ShadowFilter): void {
+        console.log(this.name, value);
     }
 
     private _svg!: SVGSVGElement;
