@@ -3,8 +3,8 @@ import IDisplayElement from '../interfaces/core/IDisplayElement';
 import IColor from '../interfaces/vo/IColor';
 import ILinearGradient from '../interfaces/vo/ILinearGradient';
 import LinearGradient from '../vo/LinearGradient';
-import IFilter from '../interfaces/filters/IFilter';
 import BoxShadowFilter from '../filters/BoxShadowFilter';
+import BlurFilter from '../filters/BlurFilter';
 
 export default class DisplayElement extends SizeElement implements IDisplayElement {
     public constructor() {
@@ -17,9 +17,9 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
         this.style.boxSizing = 'border-box';
     }
 
-    private filters: Array<IFilter> = [];
+    private filters: Array<BlurFilter | BoxShadowFilter> = [];
 
-    public addFilter(value: IFilter): void {
+    public addFilter(value: BlurFilter | BoxShadowFilter): void {
         this.filters.push(value);
         value.addEventListener('invalidate', this.filtersChanged);
         this.filtersChanged();
@@ -82,7 +82,7 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
         return this._backgroundColor;
     }
 
-    protected _cornerSize = 0;
+    private _cornerSize = 0;
 
     public set cornerSize(value: number) {
         if (this._cornerSize === value) {
@@ -101,24 +101,6 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
 
     public get cornerSize(): number {
         return this._cornerSize;
-    }
-
-    private _visible = true;
-
-    public set visible(value: boolean) {
-        if (this._visible === value) {
-            return;
-        }
-        this._visible = value;
-        if (this._visible) {
-            this.style.visibility = '';
-            return;
-        }
-        this.style.visibility = 'hidden';
-    }
-
-    public get visible(): boolean {
-        return this._visible;
     }
 }
 customElements.define('display-element', DisplayElement);
