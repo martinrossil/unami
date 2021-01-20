@@ -7,7 +7,7 @@ import IDisplayContainer from './interfaces/core/IDisplayContainer';
 import IDisplayElement from './interfaces/core/IDisplayElement';
 import IShadowFilter from './interfaces/filters/IShadowFilter';
 import IPathElement from './interfaces/svg/IPathElement';
-import ISurfaceElement from './interfaces/svg/ISurfaceElement';
+import IColor from './interfaces/vo/IColor';
 import ILinearGradient from './interfaces/vo/ILinearGradient';
 import IUnamiDev from './IUnamiDev';
 import VerticalLayout from './layout/VerticalLayout';
@@ -24,16 +24,35 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         this.name = 'UnamiDev';
         this.layout = new VerticalLayout(0, 'center', 'middle');
         this.loadComplete = this.loadComplete.bind(this);
-        this.backgroundColor = new Color(225, 100, 94);
+        const red: IColor = new Color(0, 100, 50);
+        // const green: IColor = new Color(106, 100, 50);
+        const orange: IColor = new Color(46, 100, 50);
+        // this.backgroundColor = red;
+        // const blue: IColor = new Color(212, 100, 50);
+        // const purple: IColor = new Color(280, 100, 50);
+        const lg: ILinearGradient = new LinearGradient(0, [red, orange]);
+        this.surfaceElement.fillColor = lg;
+        this.addElement(this.surfaceElement);
+        // this.backgroundColor = lg
         // this.backgroundColor = new LinearGradient(0, [new Color(0, 100, 50), new Color(46, 125, 50)]);
         window.addEventListener('load', this.loadComplete);
         window.addEventListener('click', () => {
+            // red.hue += 10;
+            // console.log('click');
+            // this.surfaceElement.fillColor = lg;
+            // lg.addColors([green, purple, blue]);
+            // green.hue += 10;
+            lg.degrees += 10;
+            // lg.addColor(blue);
+            // this.backgroundColor = blue;
+            // this.backgroundColor.hue += 10;
+            // red.opacity -= 0.05;
             // this.white.cornerSize += 8;
             // this.white.visible = !this.white.visible;
             // this.sf.color.hue += 15;
             // this.lg.degrees += 5;
             // this.surfaceElement.fillColor = null;
-            this.surfaceElement.strokeColor = null;
+            // this.surfaceElement.strokeColor = null;
         });
     }
 
@@ -41,15 +60,34 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
 
     private loadComplete(): void {
         window.removeEventListener('load', this.loadComplete);
-        console.log('loadComplete');
-        console.timeEnd('app');
-        console.log('before [' + this.white.style.filter + ']');
+        // console.log('loadComplete');
+        // console.timeEnd('app');
+        // console.log('before [' + this.white.style.filter + ']');
         // this.addElement(this.blue);
-        this.addElement(this.dc);
-        console.log('after [' + this.white.style.filter + ']');
+        // this.addElement(this.dc);
+        // console.log('after [' + this.white.style.filter + ']');
         /* if (this.white.style.filter === '') {
             this.white.style.boxShadow = '4px 4px 4px hsla(0, 0%, 0%, 1.0)';
         } */
+    }
+
+    private _surfaceElement!: SurfaceElement;
+
+    private get surfaceElement(): SurfaceElement {
+        if (!this._surfaceElement) {
+            this._surfaceElement = new SurfaceElement();
+            this._surfaceElement.size(400, 400);
+            // this._surfaceElement.percentHeight = 75;
+            this._surfaceElement.cornerSize = 30;
+            this._surfaceElement.cornerType = 'round';
+            // this._surfaceElement.fillColor = new Color(0, 100, 50);
+            // this._surfaceElement.strokeWidth = 10;
+            // this._surfaceElement.strokeColor = new Color(212, 100, 50, 0.5);
+            // this._surfaceElement.addFilter(new ShadowFilter(0, 4, 4, new Color(0, 0, 0, 0.8)));
+            // this._surfaceElement.addFilter(new BoxShadowFilter(0, 4, 6, -1, new Color(0, 0, 0, 0.2)));
+            // this._surfaceElement.addFilter(new BoxShadowFilter(0, 2, 4, -1, new Color(0, 0, 0, 0.15)));
+        }
+        return this._surfaceElement;
     }
 
     private _blue!: IDisplayElement;
@@ -81,25 +119,6 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
             this._dc.addElement(this.surfaceElement);
         }
         return this._dc;
-    }
-
-    private _surfaceElement!: ISurfaceElement;
-
-    private get surfaceElement(): ISurfaceElement {
-        if (!this._surfaceElement) {
-            this._surfaceElement = new SurfaceElement();
-            this._surfaceElement.percentWidth = 75;
-            this._surfaceElement.percentHeight = 75;
-            this._surfaceElement.cornerSize = 30;
-            this._surfaceElement.cornerType = 'round';
-            this._surfaceElement.fillColor = new Color(0, 100, 50);
-            this._surfaceElement.strokeWidth = 10;
-            this._surfaceElement.strokeColor = new Color(212, 100, 50, 0.5);
-            this._surfaceElement.addFilter(new ShadowFilter(0, 4, 4, new Color(0, 0, 0, 0.8)));
-            // this._surfaceElement.addFilter(new BoxShadowFilter(0, 4, 6, -1, new Color(0, 0, 0, 0.2)));
-            // this._surfaceElement.addFilter(new BoxShadowFilter(0, 2, 4, -1, new Color(0, 0, 0, 0.15)));
-        }
-        return this._surfaceElement;
     }
 
     private lg: ILinearGradient = new LinearGradient(0, [new Color(0, 100, 50), new Color(46, 100, 50)]);
