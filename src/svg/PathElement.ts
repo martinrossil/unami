@@ -156,7 +156,7 @@ export default class PathElement extends SvgElement implements IPathElement {
             this.path.setAttribute('fill', this._fillColor.toString());
             return;
         }
-        if (this._fillColor instanceof LinearGradient) { // translate(200, 200) 
+        if (this._fillColor instanceof LinearGradient) { // translate(200, 200)
             this.fillLinearGradient.setAttribute('gradientTransform', 'rotate(' + this._fillColor.degrees + ' 200 200)');
             if (this._fillColor.colors.length) {
                 this.addStopColorsToFillLinearGradient(this._fillColor.colors);
