@@ -5,6 +5,7 @@ import ILinearGradient from '../interfaces/vo/ILinearGradient';
 import LinearGradient from '../vo/LinearGradient';
 import BoxShadowFilter from '../filters/BoxShadowFilter';
 import BlurFilter from '../filters/BlurFilter';
+import Color from '../vo/Color';
 
 export default class DisplayElement extends SizeElement implements IDisplayElement {
     public constructor() {
@@ -49,14 +50,16 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
 
     private backgroundColorChanged(): void {
         if (this.backgroundColor) {
+            if (this.backgroundColor instanceof Color) {
+                this.style.background = '';
+                this.style.backgroundColor = this.backgroundColor.toString();
+                return;
+            }
             if (this.backgroundColor instanceof LinearGradient) {
                 this.style.backgroundColor = '';
                 this.style.background = this.backgroundColor.toString();
                 return;
             }
-            this.style.background = '';
-            this.style.backgroundColor = this.backgroundColor.toString();
-            return;
         }
         this.style.backgroundColor = '';
         this.style.background = '';
@@ -68,14 +71,32 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
         if (this._backgroundColor === value) {
             return;
         }
-        if (this._backgroundColor) {
-            this._backgroundColor.removeEventListener('invalidate', this.backgroundColorChanged);
+        if (this._backgroundColor instanceof Color) {
+            this._backgroundColor.removeEventListener(Color.CHANGED, this.backgroundColorChanged);
+        } else if (this._backgroundColor instanceof LinearGradient) {
+            this._backgroundColor.removeEventListener(LinearGradient.COLOR_ADDED, this.backgroundColorChanged);
+            this._backgroundColor.removeEventListener(LinearGradient.COLORS_ADDED, this.backgroundColorChanged);
+            this._backgroundColor.removeEventListener(LinearGradient.COLOR_CHANGED, this.backgroundColorChanged);
+            this._backgroundColor.removeEventListener(LinearGradient.DEGREES_CHANGED, this.backgroundColorChanged);
         }
         this._backgroundColor = value;
-        if (this._backgroundColor) {
-            this._backgroundColor.addEventListener('invalidate', this.backgroundColorChanged);
+        if (this._backgroundColor instanceof Color) {
+            this._backgroundColor.addEventListener(Color.CHANGED, this.backgroundColorChanged);
+            this.style.background = '';
+            this.style.backgroundColor = this._backgroundColor.toString();
+            return;
         }
-        this.backgroundColorChanged();
+        if (this._backgroundColor instanceof LinearGradient) {
+            this._backgroundColor.addEventListener(LinearGradient.COLOR_ADDED, this.backgroundColorChanged);
+            this._backgroundColor.addEventListener(LinearGradient.COLORS_ADDED, this.backgroundColorChanged);
+            this._backgroundColor.addEventListener(LinearGradient.COLOR_CHANGED, this.backgroundColorChanged);
+            this._backgroundColor.addEventListener(LinearGradient.DEGREES_CHANGED, this.backgroundColorChanged);
+            this.style.backgroundColor = '';
+            this.style.background = this._backgroundColor.toString();
+            return;
+        }
+        this.style.backgroundColor = '';
+        this.style.background = '';
     }
 
     public get backgroundColor(): IColor | ILinearGradient | null {
