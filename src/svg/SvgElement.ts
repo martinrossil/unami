@@ -34,6 +34,7 @@ export default class SvgElement extends SizeElement implements ISvgElement {
             this._svg.style.overflow = 'visible';
             this._svg.appendChild(this.defs);
             this._svg.appendChild(this.group);
+            this._svg.setAttribute('preserveAspectRatio', 'none');
         }
         return this._svg;
     }
