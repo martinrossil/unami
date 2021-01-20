@@ -11,7 +11,6 @@ export default class SurfaceElement extends PathElement implements ISurfaceEleme
 
     protected validate(): void {
         super.validate();
-        console.log(this.name, 'validate()');
         this.updatePathData();
     }
 
