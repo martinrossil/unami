@@ -32,17 +32,18 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         // const purple: IColor = new Color(280, 100, 50);
         const lg: ILinearGradient = new LinearGradient(0, [red, orange]);
         this.surfaceElement.fillColor = lg;
-        this.addElement(this.surfaceElement);
+        // this.addElement(this.surfaceElement);
+        this.addElement(this.pathElement);
         // this.backgroundColor = lg
         // this.backgroundColor = new LinearGradient(0, [new Color(0, 100, 50), new Color(46, 125, 50)]);
         window.addEventListener('load', this.loadComplete);
         window.addEventListener('click', () => {
             // red.hue += 10;
-            // console.log('click');
+            console.log('click');
             // this.surfaceElement.fillColor = lg;
             // lg.addColors([green, purple, blue]);
             // green.hue += 10;
-            lg.degrees += 10;
+            this.lg.degrees += 10;
             // lg.addColor(blue);
             // this.backgroundColor = blue;
             // this.backgroundColor.hue += 10;
@@ -76,8 +77,9 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
     private get surfaceElement(): SurfaceElement {
         if (!this._surfaceElement) {
             this._surfaceElement = new SurfaceElement();
-            this._surfaceElement.size(400, 400);
-            // this._surfaceElement.percentHeight = 75;
+            // this._surfaceElement.size(400, 400);
+            this._surfaceElement.percentWidth = 75;
+            this._surfaceElement.percentHeight = 75;
             this._surfaceElement.cornerSize = 30;
             this._surfaceElement.cornerType = 'round';
             // this._surfaceElement.fillColor = new Color(0, 100, 50);
@@ -121,7 +123,7 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         return this._dc;
     }
 
-    private lg: ILinearGradient = new LinearGradient(0, [new Color(0, 100, 50), new Color(46, 100, 50)]);
+    private lg: ILinearGradient = new LinearGradient(90, [new Color(0, 100, 50), new Color(46, 100, 50)]);
 
     private _pathElement!: IPathElement;
 
@@ -129,8 +131,8 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         if (!this._pathElement) {
             this._pathElement = new PathElement();
             this._pathElement.viewBox = new Rectangle(0, 0, 24, 24);
-            this._pathElement.percentWidth = 100;
-            this._pathElement.percentHeight = 100;
+            this._pathElement.percentWidth = 75;
+            this._pathElement.percentHeight = 75;
             // this._pathElement.strokeColor = new Color(212, 100, 50);
             this._pathElement.fillColor = this.lg;
             this._pathElement.addFilter(new ShadowFilter(0, 4, 4));
