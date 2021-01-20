@@ -2,7 +2,7 @@ import IEventDispatcher from '../interfaces/event/IEventDispatcher';
 import IEventListener from '../interfaces/event/IEventListener';
 
 export default class EventDispatcher implements IEventDispatcher {
-    protected listeners: Map<string, IEventListener[] | undefined> = new Map();
+    private listeners: Map<string, IEventListener[] | undefined> = new Map();
 
     public dispatchEvent(event: Event): boolean {
         const typeListeners: IEventListener[] | undefined = this.listeners.get(event.type);
