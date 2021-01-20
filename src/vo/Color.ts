@@ -3,6 +3,7 @@ import IColor from '../interfaces/vo/IColor';
 
 export default class Color extends EventDispatcher implements IColor {
     public static NONE = '';
+    public static CHANGED = 'Color.CHANGED';
     public constructor(hue = 0, saturation = 0, lightness = 0, opacity = 1.0) {
         super();
         this.name = 'Color';
@@ -152,6 +153,6 @@ export default class Color extends EventDispatcher implements IColor {
     }
 
     private notify(): void {
-        this.dispatch('invalidate');
+        this.dispatch(Color.CHANGED, this);
     }
 }
