@@ -129,7 +129,7 @@ export default class PathElement extends SvgElement implements IPathElement {
     }
 
     private fillLinearGradientDegreesChanged(e: CustomEvent<number>): void {
-        console.log(e.detail); // translate(200, 200) 
+        console.log(e.detail); // translate(200, 200)
         this.fillLinearGradient.setAttribute('gradientTransform', 'rotate(' + e.detail + ' 200 200)');
     }
 
