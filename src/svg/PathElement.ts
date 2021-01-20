@@ -19,6 +19,13 @@ export default class PathElement extends SvgElement implements IPathElement {
         this.group.appendChild(this.path);
     }
 
+    protected validate(): void {
+        super.validate();
+        if (this.fillColor instanceof LinearGradient) {
+            this.updateFillLinearGradientRotation(this.fillColor.degrees);
+        }
+    }
+
     private strokeColorChanged(): void {
         if (this.strokeColor) {
             this.path.setAttribute('stroke', this.strokeColor.toString());
@@ -91,20 +98,10 @@ export default class PathElement extends SvgElement implements IPathElement {
     }
 
     private fillColorChanged(): void {
-        console.log(this.name, 'fillColorChanged()');
         if (this.fillColor instanceof Color) {
             this.path.setAttribute('fill', this.fillColor.toString());
             return;
         }
-        /* if (this.fillColor) {
-            if (this.fillColor instanceof LinearGradient) {
-                // this.defs.contains
-                this.fillLinearGradient.setAttribute('gradientTransform', 'rotate(' + this.fillColor.degrees + ')'); // gradientTransform="rotate(90)"
-                return;
-            }
-            this.path.setAttribute('fill', this.fillColor.toString());
-            return;
-        } */
         this.path.removeAttribute('fill');
     }
 
@@ -129,8 +126,7 @@ export default class PathElement extends SvgElement implements IPathElement {
     }
 
     private fillLinearGradientDegreesChanged(e: CustomEvent<number>): void {
-        console.log(e.detail); // translate(200, 200)
-        this.fillLinearGradient.setAttribute('gradientTransform', 'rotate(' + e.detail + ' 200 200)');
+        this.updateFillLinearGradientRotation(e.detail)
     }
 
     private _fillColor: IColor | ILinearGradient | null = null;
@@ -156,8 +152,8 @@ export default class PathElement extends SvgElement implements IPathElement {
             this.path.setAttribute('fill', this._fillColor.toString());
             return;
         }
-        if (this._fillColor instanceof LinearGradient) { // translate(200, 200)
-            this.fillLinearGradient.setAttribute('gradientTransform', 'rotate(' + this._fillColor.degrees + ' 200 200)');
+        if (this._fillColor instanceof LinearGradient) {
+            this.updateFillLinearGradientRotation(this._fillColor.degrees);
             if (this._fillColor.colors.length) {
                 this.addStopColorsToFillLinearGradient(this._fillColor.colors);
                 this.updateFillLinearGradientStopOffsets();
@@ -175,6 +171,16 @@ export default class PathElement extends SvgElement implements IPathElement {
 
     public get fillColor(): IColor | ILinearGradient | null {
         return this._fillColor;
+    }
+
+    private updateFillLinearGradientRotation(degrees: number): void {
+        let transform = 'rotate(' + degrees + ' ';
+        if (this.viewBox) {
+            transform += this.viewBox.width * 0.5 + ' ' + this.viewBox.height * 0.5 + ')';
+        } else {
+            transform += this.measuredWidth * 0.5 + ' ' + this.measuredHeight * 0.5 + ')';
+        }
+        this.fillLinearGradient.setAttribute('gradientTransform', transform);
     }
 
     private addStopColorsToFillLinearGradient(colors: Array<IColor>): void {
