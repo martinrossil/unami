@@ -6,6 +6,8 @@ import LinearGradient from '../vo/LinearGradient';
 import BoxShadowFilter from '../filters/BoxShadowFilter';
 import BlurFilter from '../filters/BlurFilter';
 import Color from '../vo/Color';
+import ShadowFilter from '../filters/ShadowFilter';
+import { Strings } from '../enums/Strings';
 
 export default class DisplayElement extends SizeElement implements IDisplayElement {
     public constructor() {
@@ -13,21 +15,20 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
         this.name = 'DisplayElement';
         this.backgroundColorChanged = this.backgroundColorChanged.bind(this);
         this.filtersChanged = this.filtersChanged.bind(this);
-        this.style.border = 'none';
-        this.style.outline = 'none';
-        this.style.boxSizing = 'border-box';
+        this.style.border = Strings.NONE;
+        this.style.outline = Strings.NONE;
+        this.style.boxSizing = Strings.BORDER_BOX;
     }
 
-    private filters: Array<BlurFilter | BoxShadowFilter> = [];
+    private filters: Array<BlurFilter | BoxShadowFilter | ShadowFilter> = [];
 
-    public addFilter(value: BlurFilter | BoxShadowFilter): void {
+    public addFilter(value: BlurFilter | BoxShadowFilter | ShadowFilter): void {
         this.filters.push(value);
         value.addEventListener('invalidate', this.filtersChanged);
         this.filtersChanged();
     }
 
     private filtersChanged(): void {
-        console.log(this.name, 'filtersChanged()');
         let filterString = '';
         let boxShadowString = '';
         if (this.filters.length === 0) {
@@ -36,7 +37,6 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
             return;
         }
         for (const filter of this.filters) {
-            console.log('filter', filter.toString());
             if (filter instanceof BoxShadowFilter) {
                 boxShadowString += filter.toString() + ', ';
             } else {
@@ -45,7 +45,6 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
         }
         this.style.filter = filterString.substr(0, filterString.length - 2);
         this.style.boxShadow = boxShadowString.substr(0, boxShadowString.length - 2);
-        console.log('filter', this.style.filter, 'box', this.style.boxShadow);
     }
 
     private backgroundColorChanged(): void {
@@ -117,7 +116,7 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
             return;
         }
         this._cornerSize = value;
-        this.style.borderRadius = this._cornerSize + 'px';
+        this.style.borderRadius = this._cornerSize + Strings.PX;
     }
 
     public get cornerSize(): number {
