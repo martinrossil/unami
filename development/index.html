@@ -1,11 +1,40 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="preload" href="inter-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="inter-medium.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="inter-bold.woff2" as="font" type="font/woff2" crossorigin>
     <title>Development</title>
-
+    <style> 
+        @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url('inter-regular.woff2') format('woff2');
+        }
+        @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 500;
+        font-display: block;
+        src: url('inter-medium.woff2') format('woff2');
+        }
+        @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block;
+        src: url('inter-bold.woff2') format('woff2');
+        }
+      </style>
 </head>
     <body>
+        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 400; position: absolute;">Inter Regular Preload</p>
+        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 500; position: absolute;">Inter Medium Preload</p>
+        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 700; position: absolute;">Inter Bold Preload</p>
         <unami-dev></unami-dev>
         <script type="module" src="./esnext.js" defer></script>
     </body>
