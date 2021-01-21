@@ -5,6 +5,7 @@ import ILinearGradient from '../interfaces/vo/ILinearGradient';
 import Color from '../vo/Color';
 import LinearGradient from '../vo/LinearGradient';
 import SvgElement from './SvgElement';
+import { Strings } from '../enums/Strings';
 
 export default class PathElement extends SvgElement implements IPathElement {
     public constructor() {
@@ -12,6 +13,10 @@ export default class PathElement extends SvgElement implements IPathElement {
         this.name = 'PathElement';
         this.strokeColorChanged = this.strokeColorChanged.bind(this);
         this.fillColorChanged = this.fillColorChanged.bind(this);
+        this.strokeLinearGradientColorAdded = this.strokeLinearGradientColorAdded.bind(this);
+        this.strokeLinearGradientColorsAdded = this.strokeLinearGradientColorsAdded.bind(this);
+        this.strokeLinearGradientColorChanged = this.strokeLinearGradientColorChanged.bind(this);
+        this.strokeLinearGradientDegreesChanged = this.strokeLinearGradientDegreesChanged.bind(this);
         this.fillLinearGradientColorAdded = this.fillLinearGradientColorAdded.bind(this);
         this.fillLinearGradientColorsAdded = this.fillLinearGradientColorsAdded.bind(this);
         this.fillLinearGradientColorChanged = this.fillLinearGradientColorChanged.bind(this);
@@ -22,16 +27,11 @@ export default class PathElement extends SvgElement implements IPathElement {
     protected validate(): void {
         super.validate();
         if (this.fillColor instanceof LinearGradient) {
-            this.updateFillLinearGradientRotation(this.fillColor.degrees);
+            this.updateLinearGradientRotation(this.fillLinearGradient, this.fillColor.degrees);
         }
-    }
-
-    private strokeColorChanged(): void {
-        if (this.strokeColor) {
-            this.path.setAttribute('stroke', this.strokeColor.toString());
-            return;
+        if (this.strokeColor instanceof LinearGradient) {
+            this.updateLinearGradientRotation(this.strokeLinearGradient, this.strokeColor.degrees);
         }
-        this.path.removeAttribute('stroke');
     }
 
     private _pathData = '';
@@ -41,7 +41,7 @@ export default class PathElement extends SvgElement implements IPathElement {
             return;
         }
         this._pathData = value;
-        this.path.setAttribute('d', value);
+        this.path.setAttribute(Strings.D, value);
     }
 
     public get pathData(): string {
@@ -52,29 +52,20 @@ export default class PathElement extends SvgElement implements IPathElement {
 
     protected get path(): SVGPathElement {
         if (!this._path) {
-            this._path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            this._path = document.createElementNS(Strings.SVG_NS, Strings.PATH);
         }
         return this._path;
     }
 
-    private _strokeColor: IColor | ILinearGradient | null = null;
+    private strokeLinearGradientId = Math.random().toString();
 
-    public set strokeColor(value: IColor | ILinearGradient | null) {
-        if (this._strokeColor === value) {
-            return;
-        }
-        if (this._strokeColor) {
-            this._strokeColor.removeEventListener('invalidate', this.strokeColorChanged);
-        }
-        this._strokeColor = value;
-        if (this._strokeColor) {
-            this._strokeColor.addEventListener('invalidate', this.strokeColorChanged);
-        }
-        this.strokeColorChanged();
-    }
+    private _strokeLinearGradient!: SVGLinearGradientElement
 
-    public get strokeColor(): IColor | ILinearGradient | null {
-        return this._strokeColor;
+    private get strokeLinearGradient(): SVGLinearGradientElement {
+        if (!this._strokeLinearGradient) {
+            this._strokeLinearGradient = this.getLinearGradient(this.strokeLinearGradientId);
+        }
+        return this._strokeLinearGradient;
     }
 
     private fillLinearGradientId = Math.random().toString();
@@ -83,26 +74,41 @@ export default class PathElement extends SvgElement implements IPathElement {
 
     private get fillLinearGradient(): SVGLinearGradientElement {
         if (!this._fillLinearGradient) {
-            this._fillLinearGradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
-            this._fillLinearGradient.setAttribute('id', this.fillLinearGradientId);
-            this._fillLinearGradient.setAttribute('gradientUnits', 'userSpaceOnUse');
+            this._fillLinearGradient = this.getLinearGradient(this.fillLinearGradientId);
         }
         return this._fillLinearGradient;
     }
 
-    private resetFillLinearGradient(): void {
-        while (this.fillLinearGradient.firstChild) {
-            this.fillLinearGradient.removeChild(this.fillLinearGradient.firstChild);
-        }
-        this.fillLinearGradient.removeAttribute('gradientTransform');
+    private getLinearGradient(id: string): SVGLinearGradientElement {
+        const linearGradient: SVGLinearGradientElement = document.createElementNS(Strings.SVG_NS, Strings.LINEAR_GRADIENT);
+        linearGradient.setAttribute(Strings.ID, id);
+        linearGradient.setAttribute(Strings.GRADIENT_UNITS, Strings.USER_SPACE_ON_USE);
+        return linearGradient;
     }
 
-    private fillColorChanged(): void {
-        if (this.fillColor instanceof Color) {
-            this.path.setAttribute('fill', this.fillColor.toString());
-            return;
+    private resetLinearGradient(linearGradient: SVGLinearGradientElement): void {
+        while (linearGradient.firstChild) {
+            linearGradient.removeChild(linearGradient.firstChild);
         }
-        this.path.removeAttribute('fill');
+        linearGradient.removeAttribute(Strings.GRADIENT_TRANSFORM);
+    }
+
+    private strokeColorChanged(e: CustomEvent<IColor>): void {
+        this.path.setAttribute(Strings.STROKE, e.detail.toString());
+    }
+
+    private fillColorChanged(e: CustomEvent<IColor>): void {
+        this.path.setAttribute(Strings.FILL, e.detail.toString());
+    }
+
+    private strokeLinearGradientColorChanged(e: CustomEvent<Color>): void {
+        const color: Color = e.detail;
+        const stops: Array<SVGStopElement> | undefined = this.strokeColorStopMapping.get(color);
+        if (stops) {
+            for (const stop of stops) {
+                stop.setAttribute(Strings.STOP_COLOR, color.toString());
+            }
+        }
     }
 
     private fillLinearGradientColorChanged(e: CustomEvent<Color>): void {
@@ -110,23 +116,75 @@ export default class PathElement extends SvgElement implements IPathElement {
         const stops: Array<SVGStopElement> | undefined = this.fillColorStopMapping.get(color);
         if (stops) {
             for (const stop of stops) {
-                stop.setAttribute('stop-color', color.toString());
+                stop.setAttribute(Strings.STOP_COLOR, color.toString());
             }
         }
     }
 
     private fillLinearGradientColorAdded(e: CustomEvent<Color>): void {
         this.addStopColorToFillLinearGradient(e.detail);
-        this.updateFillLinearGradientStopOffsets();
+        this.updateLinearGradientStopOffsets(this.fillLinearGradient);
+    }
+
+    private strokeLinearGradientColorAdded(e: CustomEvent<Color>): void {
+        this.addStopColorToStrokeLinearGradient(e.detail);
+        this.updateLinearGradientStopOffsets(this.strokeLinearGradient);
     }
 
     private fillLinearGradientColorsAdded(e: CustomEvent<Array<Color>>): void {
         this.addStopColorsToFillLinearGradient(e.detail);
-        this.updateFillLinearGradientStopOffsets();
+        this.updateLinearGradientStopOffsets(this.fillLinearGradient);
+    }
+
+    private strokeLinearGradientColorsAdded(e: CustomEvent<Array<Color>>): void {
+        this.addStopColorsToStrokeLinearGradient(e.detail);
+        this.updateLinearGradientStopOffsets(this.strokeLinearGradient);
     }
 
     private fillLinearGradientDegreesChanged(e: CustomEvent<number>): void {
-        this.updateFillLinearGradientRotation(e.detail)
+        this.updateLinearGradientRotation(this.fillLinearGradient, e.detail)
+    }
+
+    private strokeLinearGradientDegreesChanged(e: CustomEvent<number>): void {
+        this.updateLinearGradientRotation(this.strokeLinearGradient, e.detail)
+    }
+
+    private _strokeColor: IColor | ILinearGradient | null = null;
+
+    public set strokeColor(value: IColor | ILinearGradient | null) {
+        if (this._strokeColor === value) {
+            return;
+        }
+        if (this._strokeColor instanceof Color) {
+            this._strokeColor.removeEventListener(Color.CHANGED, this.strokeColorChanged as IEventListener);
+        } else if (this._strokeColor instanceof LinearGradient) {
+            this.defs.removeChild(this.strokeLinearGradient);
+            this.resetLinearGradient(this.strokeLinearGradient);
+            this.strokeColorStopMapping.clear();
+            this.removeStrokeLinearGradientListeners(this._strokeColor);
+        }
+        this._strokeColor = value;
+        if (this._strokeColor instanceof Color) {
+            this._strokeColor.addEventListener(Color.CHANGED, this.strokeColorChanged as IEventListener);
+            this.path.setAttribute(Strings.STROKE, this._strokeColor.toString());
+            return;
+        }
+        if (this._strokeColor instanceof LinearGradient) {
+            this.updateLinearGradientRotation(this.strokeLinearGradient, this._strokeColor.degrees);
+            if (this._strokeColor.colors.length) {
+                this.addStopColorsToStrokeLinearGradient(this._strokeColor.colors);
+                this.updateLinearGradientStopOffsets(this.strokeLinearGradient);
+            }
+            this.defs.appendChild(this.strokeLinearGradient);
+            this.addStrokeLinearGradientListeners(this._strokeColor);
+            this.path.setAttribute(Strings.STROKE, Strings.URL + "('#" + this.strokeLinearGradientId + "')");
+            return;
+        }
+        this.path.removeAttribute(Strings.STROKE);
+    }
+
+    public get strokeColor(): IColor | ILinearGradient | null {
+        return this._strokeColor;
     }
 
     private _fillColor: IColor | ILinearGradient | null = null;
@@ -136,51 +194,90 @@ export default class PathElement extends SvgElement implements IPathElement {
             return;
         }
         if (this._fillColor instanceof Color) {
-            this._fillColor.removeEventListener(Color.CHANGED, this.fillColorChanged);
+            this._fillColor.removeEventListener(Color.CHANGED, this.fillColorChanged as IEventListener);
         } else if (this._fillColor instanceof LinearGradient) {
             this.defs.removeChild(this.fillLinearGradient);
-            this.resetFillLinearGradient();
+            this.resetLinearGradient(this.fillLinearGradient);
             this.fillColorStopMapping.clear();
-            this._fillColor.removeEventListener(LinearGradient.COLOR_ADDED, this.fillLinearGradientColorAdded as IEventListener);
-            this._fillColor.removeEventListener(LinearGradient.COLORS_ADDED, this.fillLinearGradientColorsAdded as IEventListener);
-            this._fillColor.removeEventListener(LinearGradient.COLOR_CHANGED, this.fillLinearGradientColorChanged as IEventListener);
-            this._fillColor.removeEventListener(LinearGradient.DEGREES_CHANGED, this.fillLinearGradientDegreesChanged as IEventListener);
+            this.removeFillLinearGradientListeners(this._fillColor);
         }
         this._fillColor = value;
         if (this._fillColor instanceof Color) {
-            this._fillColor.addEventListener(Color.CHANGED, this.fillColorChanged);
-            this.path.setAttribute('fill', this._fillColor.toString());
+            this._fillColor.addEventListener(Color.CHANGED, this.fillColorChanged as IEventListener);
+            this.path.setAttribute(Strings.FILL, this._fillColor.toString());
             return;
         }
         if (this._fillColor instanceof LinearGradient) {
-            this.updateFillLinearGradientRotation(this._fillColor.degrees);
+            this.updateLinearGradientRotation(this.fillLinearGradient, this._fillColor.degrees);
             if (this._fillColor.colors.length) {
                 this.addStopColorsToFillLinearGradient(this._fillColor.colors);
-                this.updateFillLinearGradientStopOffsets();
+                this.updateLinearGradientStopOffsets(this.fillLinearGradient);
             }
             this.defs.appendChild(this.fillLinearGradient);
-            this._fillColor.addEventListener(LinearGradient.COLOR_ADDED, this.fillLinearGradientColorAdded as IEventListener);
-            this._fillColor.addEventListener(LinearGradient.COLORS_ADDED, this.fillLinearGradientColorsAdded as IEventListener);
-            this._fillColor.addEventListener(LinearGradient.COLOR_CHANGED, this.fillLinearGradientColorChanged as IEventListener);
-            this._fillColor.addEventListener(LinearGradient.DEGREES_CHANGED, this.fillLinearGradientDegreesChanged as IEventListener);
-            this.path.setAttribute('fill', "url('#" + this.fillLinearGradientId + "')");
+            this.addFillLinearGradientListeners(this._fillColor);
+            this.path.setAttribute(Strings.FILL, Strings.URL + "('#" + this.fillLinearGradientId + "')");
             return;
         }
-        this.path.removeAttribute('fill');
+        this.path.removeAttribute(Strings.FILL);
     }
 
     public get fillColor(): IColor | ILinearGradient | null {
         return this._fillColor;
     }
 
-    private updateFillLinearGradientRotation(degrees: number): void {
-        let transform = 'rotate(' + degrees + ' ';
+    private removeStrokeLinearGradientListeners(linearGradient: LinearGradient): void {
+        linearGradient.removeEventListener(LinearGradient.COLOR_ADDED, this.strokeLinearGradientColorAdded as IEventListener);
+        linearGradient.removeEventListener(LinearGradient.COLORS_ADDED, this.strokeLinearGradientColorsAdded as IEventListener);
+        linearGradient.removeEventListener(LinearGradient.COLOR_CHANGED, this.strokeLinearGradientColorChanged as IEventListener);
+        linearGradient.removeEventListener(LinearGradient.DEGREES_CHANGED, this.strokeLinearGradientDegreesChanged as IEventListener);
+    }
+
+    private addStrokeLinearGradientListeners(linearGradient: LinearGradient): void {
+        linearGradient.addEventListener(LinearGradient.COLOR_ADDED, this.strokeLinearGradientColorAdded as IEventListener);
+        linearGradient.addEventListener(LinearGradient.COLORS_ADDED, this.strokeLinearGradientColorsAdded as IEventListener);
+        linearGradient.addEventListener(LinearGradient.COLOR_CHANGED, this.strokeLinearGradientColorChanged as IEventListener);
+        linearGradient.addEventListener(LinearGradient.DEGREES_CHANGED, this.strokeLinearGradientDegreesChanged as IEventListener);
+    }
+
+    private removeFillLinearGradientListeners(linearGradient: LinearGradient): void {
+        linearGradient.removeEventListener(LinearGradient.COLOR_ADDED, this.fillLinearGradientColorAdded as IEventListener);
+        linearGradient.removeEventListener(LinearGradient.COLORS_ADDED, this.fillLinearGradientColorsAdded as IEventListener);
+        linearGradient.removeEventListener(LinearGradient.COLOR_CHANGED, this.fillLinearGradientColorChanged as IEventListener);
+        linearGradient.removeEventListener(LinearGradient.DEGREES_CHANGED, this.fillLinearGradientDegreesChanged as IEventListener);
+    }
+
+    private addFillLinearGradientListeners(linearGradient: LinearGradient): void {
+        linearGradient.addEventListener(LinearGradient.COLOR_ADDED, this.fillLinearGradientColorAdded as IEventListener);
+        linearGradient.addEventListener(LinearGradient.COLORS_ADDED, this.fillLinearGradientColorsAdded as IEventListener);
+        linearGradient.addEventListener(LinearGradient.COLOR_CHANGED, this.fillLinearGradientColorChanged as IEventListener);
+        linearGradient.addEventListener(LinearGradient.DEGREES_CHANGED, this.fillLinearGradientDegreesChanged as IEventListener);
+    }
+
+    private updateLinearGradientRotation(linearGradientElement: SVGLinearGradientElement, degrees: number): void {
+        let transform = Strings.ROTATE + '(' + degrees + ' ';
         if (this.viewBox) {
             transform += this.viewBox.width * 0.5 + ' ' + this.viewBox.height * 0.5 + ')';
         } else {
             transform += this.measuredWidth * 0.5 + ' ' + this.measuredHeight * 0.5 + ')';
         }
-        this.fillLinearGradient.setAttribute('gradientTransform', transform);
+        linearGradientElement.setAttribute(Strings.GRADIENT_TRANSFORM, transform);
+    }
+
+    private addStopColorsToStrokeLinearGradient(colors: Array<IColor>): void {
+        for (const color of colors) {
+            this.addStopColorToStrokeLinearGradient(color);
+        }
+    }
+
+    private addStopColorToStrokeLinearGradient(color: IColor): void {
+        const stop: SVGStopElement = this.getStopFromColor(color);
+        let stops: Array<SVGStopElement> | undefined = this.strokeColorStopMapping.get(color);
+        if (!stops) {
+            stops = [];
+        }
+        stops.push(stop);
+        this.strokeColorStopMapping.set(color, stops);
+        this.strokeLinearGradient.appendChild(stop);
     }
 
     private addStopColorsToFillLinearGradient(colors: Array<IColor>): void {
@@ -201,22 +298,24 @@ export default class PathElement extends SvgElement implements IPathElement {
     }
 
     private getStopFromColor(color: IColor): SVGStopElement {
-        const stop: SVGStopElement = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
-        stop.setAttribute('stop-color', color.toString());
+        const stop: SVGStopElement = document.createElementNS(Strings.SVG_NS, Strings.STOP);
+        stop.setAttribute(Strings.STOP_COLOR, color.toString());
         return stop;
     }
 
-    private updateFillLinearGradientStopOffsets(): void {
-        if (this.fillLinearGradient.childNodes.length) {
+    private updateLinearGradientStopOffsets(linearGradientElement: SVGLinearGradientElement): void {
+        if (linearGradientElement.childNodes.length) {
             let offset = 0.0;
-            const offsetStep = 1 / (this.fillLinearGradient.childNodes.length - 1);
-            for (const child of this.fillLinearGradient.childNodes) {
+            const offsetStep = 1 / (linearGradientElement.childNodes.length - 1);
+            for (const child of linearGradientElement.childNodes) {
                 const stop: SVGStopElement = child as SVGStopElement;
-                stop.setAttribute('offset', offset + '');
+                stop.setAttribute(Strings.OFFSET, offset + '');
                 offset = offset + offsetStep;
             }
         }
     }
+
+    private strokeColorStopMapping: Map<IColor, Array<SVGStopElement>> = new Map();
 
     private fillColorStopMapping: Map<IColor, Array<SVGStopElement>> = new Map();
 
@@ -229,12 +328,12 @@ export default class PathElement extends SvgElement implements IPathElement {
         if (isNaN(value) || value < 0) {
             if (this._strokeWidth !== 0) {
                 this._strokeWidth = 0;
-                this.path.removeAttribute('stroke-width');
+                this.path.removeAttribute(Strings.STROKE_WIDTH);
             }
             return;
         }
         this._strokeWidth = value;
-        this.path.setAttribute('stroke-width', this._strokeWidth.toString());
+        this.path.setAttribute(Strings.STROKE_WIDTH, this._strokeWidth.toString());
     }
 
     public get strokeWidth(): number {
