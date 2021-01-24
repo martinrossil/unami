@@ -1,10 +1,11 @@
+import { Strings } from '../enums/Strings';
 import DisplayContainer from './DisplayContainer';
 
 export default class ApplicationElement extends DisplayContainer {
     public constructor() {
         super();
         this.name = 'ApplicationElement';
-        // this.overflow = Overflow.HIDDEN;
+        this.style.overflow = Strings.HIDDEN;
         document.body.style.setProperty('position', 'absolute');
         document.body.style.setProperty('-webkit-overflow-scrolling', 'touch');
         document.body.style.setProperty('-webkit-tap-highlight-color', 'transparent');
