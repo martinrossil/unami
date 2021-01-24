@@ -4,6 +4,7 @@ export const enum Strings {
     FILL = 'fill',
     GRADIENT_TRANSFORM = 'gradientTransform',
     GRADIENT_UNITS = 'gradientUnits',
+    HIDDEN = 'hidden',
     ID = 'id',
     LINEAR_GRADIENT = 'linearGradient',
     NONE = 'none',
