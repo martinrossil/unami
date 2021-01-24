@@ -1,17 +1,16 @@
 import DisplayElement from '../core/DisplayElement';
 import { Strings } from '../enums/Strings';
 import ITextRenderer from '../interfaces/text/ITextRenderer';
-import Color from '../vo/Color';
+import IColor from '../interfaces/vo/IColor';
+import { TextAlign } from '../types/TextAlign';
 
 export default class TextRenderer extends DisplayElement implements ITextRenderer {
     public constructor() {
         super();
         this.name = 'TextRenderer';
-        this.backgroundColor = new Color(212, 100, 50, 0.2);
         this.style.fontFamily = 'Arial';
         this.style.fontSize = '16px';
         this.style.lineHeight = '2';
-        this.style.color = 'hsla(0, 0%, 0%, 0.3)';
     }
 
     private _text = '';
@@ -26,6 +25,24 @@ export default class TextRenderer extends DisplayElement implements ITextRendere
 
     public get text(): string {
         return this._text;
+    }
+
+    private _textColor: IColor | null = null;
+
+    public set textColor(value: IColor | null) {
+        if (this._textColor === value) {
+            return;
+        }
+        this._textColor = value;
+        if (this._textColor) {
+            this.style.color = this._textColor.toString();
+        } else {
+            this.style.color = '';
+        }
+    }
+
+    public get textColor(): IColor | null {
+        return this._textColor;
     }
 
     private _fontFamily = 'Arial';
@@ -91,15 +108,51 @@ export default class TextRenderer extends DisplayElement implements ITextRendere
             return;
         }
         if (isNaN(value)) {
-            this._letterSpacing = 0;
-        } else {
-            this._letterSpacing = value;
+            if (this._letterSpacing !== 0) {
+                this._letterSpacing = 0;
+                this.style.letterSpacing = this._letterSpacing + Strings.PX;
+            }
+            return;
         }
-        this.style.letterSpacing = this._letterSpacing.toString();
+        this._letterSpacing = value;
+        this.style.letterSpacing = this._letterSpacing + Strings.PX;
     }
 
     public get letterSpacing(): number {
         return this._letterSpacing;
+    }
+
+    private _lineHeight = 2;
+
+    public set lineHeight(value: number) {
+        if (this._lineHeight === value) {
+            return;
+        }
+        if (isNaN(value) || value < 0) {
+            this._lineHeight = 2;
+            this.style.lineHeight = this._lineHeight.toString();
+            return;
+        }
+        this._lineHeight = value;
+        this.style.lineHeight = this._lineHeight.toString();
+    }
+
+    public get lineHeight(): number {
+        return this._lineHeight;
+    }
+
+    private _textAlign: TextAlign ='left';
+
+    public set textAlign(value: TextAlign) {
+        if (this._textAlign === value) {
+            return;
+        }
+        this._textAlign = value;
+        this.style.textAlign = this._textAlign;
+    }
+
+    public get textAlign(): TextAlign {
+        return this._textAlign;
     }
 }
 customElements.define('text-renderer', TextRenderer);
