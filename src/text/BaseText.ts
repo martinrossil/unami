@@ -1,6 +1,8 @@
 import DisplayElement from '../core/DisplayElement';
 import IBaseText from '../interfaces/text/IBaseText';
+import IColor from '../interfaces/vo/IColor';
 import ITypeFace from '../interfaces/vo/ITypeFace';
+import { TextAlign } from '../types/TextAlign';
 import TypeFace from '../vo/TypeFace';
 import TextRenderer from './TextRenderer';
 
@@ -66,6 +68,14 @@ export default class BaseText extends DisplayElement implements IBaseText {
         return this.textRenderer.fontSize;
     }
 
+    public set textColor(value: IColor | null) {
+        this.textRenderer.textColor = value;
+    }
+
+    public get textColor(): IColor | null {
+        return this.textRenderer.textColor;
+    }
+
     public set letterSpacing(value: number) {
         this.textRenderer.letterSpacing = value;
         this.invalidate();
@@ -75,8 +85,47 @@ export default class BaseText extends DisplayElement implements IBaseText {
         return this.textRenderer.letterSpacing;
     }
 
+    public set lineHeight(value: number) {
+        this.textRenderer.lineHeight = value;
+        this.invalidate();
+    }
+
+    public get lineHeight(): number {
+        return this.textRenderer.lineHeight
+    }
+
+    public set textAlign(value: TextAlign) {
+        this.textRenderer.textAlign = value;
+    }
+
+    public get textAlign(): TextAlign {
+        return this.textRenderer.textAlign;
+    }
+
+    protected resetTextRendererStyles(): void {
+        this.textRenderer.style.width = '';
+        this.textRenderer.style.height = '';
+    }
+
     protected get actualFontSize(): number {
         return Math.ceil(this.fontSize * this.typeFace.capHeight);
+    }
+
+    protected get topPadding(): number {
+        return (this.fontSize * this.lineHeight - this.actualFontSize) * 0.5;
+    }
+
+    protected get actualRendererWidth(): number {
+        return Math.ceil(this.textRenderer.clientWidth - this.typeFace.offsetX * 2 * this.fontSize - this.letterSpacing);
+    }
+
+    protected get actualRendererHeight(): number {
+        return Math.ceil(this.textRenderer.clientHeight - this.topPadding * 2)
+    }
+
+    protected updateTextRendererPosition(): void {
+        this.textRenderer.x = -this.typeFace.offsetX * this.fontSize;
+        this.textRenderer.y = -this.topPadding + this.typeFace.offsetY * this.fontSize;
     }
 }
 customElements.define('base-text', BaseText);
