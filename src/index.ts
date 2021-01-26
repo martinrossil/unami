@@ -1,3 +1,5 @@
+export { default as BadgeElement } from './components/BadgeElement';
+
 export { default as ApplicationElement } from './core/ApplicationElement';
 export { default as BaseElement } from './core/BaseElement';
 export { default as DisplayContainer } from './core/DisplayContainer';
@@ -18,6 +20,7 @@ export { default as ShadowFilter } from './filters/ShadowFilter';
 export { default as Machine } from './fsm/Machine';
 export { default as State } from './fsm/State';
 
+export { default as IBadgeElement } from './interfaces/components/IBadgeElement';
 export { default as IBaseElement } from './interfaces/core/IBaseElement';
 export { default as IDisplayContainer } from './interfaces/core/IDisplayContainer';
 export { default as IDisplayElement } from './interfaces/core/IDisplayElement';
