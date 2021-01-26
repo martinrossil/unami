@@ -1,11 +1,11 @@
 import DisplayContainer from '../core/DisplayContainer';
-import IBadgeElement from '../interfaces/components/IBadgeElement';
+import IBadge from '../interfaces/components/IBadge';
 import ILabelElement from '../interfaces/text/ILabelElement';
 import IColor from '../interfaces/vo/IColor';
 import ITypeFace from '../interfaces/vo/ITypeFace';
 import LabelElement from '../text/LabelElement';
 
-export default class BadgeElement extends DisplayContainer implements IBadgeElement {
+export default class Badge extends DisplayContainer implements IBadge {
     public constructor() {
         super();
         this.name = 'BadgeElement';
@@ -55,4 +55,4 @@ export default class BadgeElement extends DisplayContainer implements IBadgeElem
         return this.labelElement.typeFace;
     }
 }
-customElements.define('badge-element', BadgeElement);
+customElements.define('badge-element', Badge);
