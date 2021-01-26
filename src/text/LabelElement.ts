@@ -33,7 +33,7 @@ export default class LabelElement extends BaseText implements ILabelElement {
     }
 
     protected updateTextRendererWidth(): void {
-        this.textRenderer.width = this.measuredWidth + this.typeFace.offsetX * 2 * this.fontSize;
+        this.textRenderer.width = Math.ceil(this.measuredWidth + this.typeFace.offsetX * 2 * this.fontSize);
     }
 }
 customElements.define('label-element', LabelElement);
