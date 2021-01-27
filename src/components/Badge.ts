@@ -25,18 +25,12 @@ export default class Badge extends DisplayContainer implements IBadge {
         return this._labelElement;
     }
 
-    private _text = '';
-
     public set text(value: string) {
-        if (this._text === value) {
-            return;
-        }
-        this._text = value;
-        this.labelElement.text = this._text;
+        this.labelElement.text = value;
     }
 
     public get text(): string {
-        return this._text;
+        return this.labelElement.text;
     }
 
     public set textColor(value: IColor | null) {
