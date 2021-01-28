@@ -3,38 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="preload" href="inter-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="inter-thin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="inter-extra-light.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="inter-light.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="inter-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="inter-medium.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="inter-semi-bold.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="inter-bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="inter-extra-bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="inter-black.woff2" as="font" type="font/woff2" crossorigin>
     <title>Development</title>
-    <style> 
-        @font-face {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        font-display: block;
-        src: url('inter-regular.woff2') format('woff2');
-        }
-        @font-face {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        font-display: block;
-        src: url('inter-medium.woff2') format('woff2');
-        }
-        @font-face {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 700;
-        font-display: block;
-        src: url('inter-bold.woff2') format('woff2');
-        }
+    <style>
+      @font-face {
+      font-family: 'Bitter';
+      font-weight: 100;
+      font-display: block;
+      src: url('bitter-thin.woff2') format('woff2'), url('bitter-thin.woff') format('woff');
+      }
+      @font-face {
+      font-family: 'Bitter';
+      font-weight: 200;
+      font-display: block;
+      src: url('bitter-extra-light.woff2') format('woff2'), url('bitter-extra-light.woff') format('woff');
+      }
+      @font-face {
+      font-family: 'Bitter';
+      font-weight: 300;
+      font-display: block;
+      src: url('bitter-light.woff2') format('woff2'), url('bitter-light.woff') format('woff');
+      }
+      @font-face {
+      font-family: 'Bitter';
+      font-weight: 400;
+      font-display: block;
+      src: url('bitter-normal.woff2') format('woff2'), url('bitter-normal.woff') format('woff');
+      }
+      @font-face {
+      font-family: 'Bitter';
+      font-weight: 500;
+      font-display: block;
+      src: url('bitter-medium.woff2') format('woff2'), url('bitter-medium.woff') format('woff');
+      }
+      @font-face {
+      font-family: 'Bitter';
+      font-weight: 600;
+      font-display: block;
+      src: url('bitter-semi-bold.woff2') format('woff2'), url('bitter-semi-bold.woff') format('woff');
+      }
+      @font-face {
+      font-family: 'Bitter';
+      font-weight: 700;
+      font-display: block;
+      src: url('bitter-bold.woff2') format('woff2'), url('bitter-bold.woff') format('woff');
+      }
+      @font-face {
+      font-family: 'Bitter';
+      font-weight: 800;
+      font-display: block;
+      src: url('bitter-extra-bold.woff2') format('woff2'), url('bitter-extra-bold.woff') format('woff');
+      }
+      @font-face {
+      font-family: 'Bitter';
+      font-weight: 900;
+      font-display: block;
+      src: url('bitter-black.woff2') format('woff2'), url('bitter-black.woff') format('woff');
+      }
+      @font-face {
+      font-family: 'Inter';
+      font-weight: 100;
+      font-display: block;
+      src: url('inter-thin.woff2') format('woff2');
+      }
+      @font-face {
+      font-family: 'Inter';
+      font-weight: 200;
+      font-display: block;
+      src: url('inter-extra-light.woff2') format('woff2');
+      }
+      @font-face {
+      font-family: 'Inter';
+      font-weight: 300;
+      font-display: block;
+      src: url('inter-light.woff2') format('woff2');
+      }
+      @font-face {
+      font-family: 'Inter';
+      font-weight: 400;
+      font-display: block;
+      src: url('inter-normal.woff2') format('woff2');
+      }
+      @font-face {
+      font-family: 'Inter';
+      font-weight: 500;
+      font-display: block;
+      src: url('inter-medium.woff2') format('woff2');
+      }
+      @font-face {
+      font-family: 'Inter';
+      font-weight: 600;
+      font-display: block;
+      src: url('inter-semi-bold.woff2') format('woff2');
+      }
+      @font-face {
+      font-family: 'Inter';
+      font-weight: 700;
+      font-display: block;
+      src: url('inter-bold.woff2') format('woff2');
+      }
+      @font-face {
+      font-family: 'Inter';
+      font-weight: 800;
+      font-display: block;
+      src: url('inter-extra-bold.woff2') format('woff2');
+      }
+      @font-face {
+      font-family: 'Inter';
+      font-weight: 900;
+      font-display: block;
+      src: url('inter-black.woff2') format('woff2');
+      }
       </style>
 </head>
     <body>
-        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 400; position: absolute;">Inter Regular Preload</p>
+        <p style="font-family: 'Bitter', sans-serif;top: -100px; font-weight: 100; position: absolute;">Bitter Thin Preload</p>
+        <p style="font-family: 'Bitter', sans-serif;top: -100px; font-weight: 200; position: absolute;">Bitter Extra Light Preload</p>
+        <p style="font-family: 'Bitter', sans-serif;top: -100px; font-weight: 300; position: absolute;">Bitter Light Preload</p>
+        <p style="font-family: 'Bitter', sans-serif;top: -100px; font-weight: 400; position: absolute;">Bitter Normal Preload</p>
+        <p style="font-family: 'Bitter', sans-serif;top: -100px; font-weight: 500; position: absolute;">Bitter Medium Preload</p>
+        <p style="font-family: 'Bitter', sans-serif;top: -100px; font-weight: 600; position: absolute;">Bitter Semi Bold Preload</p>
+        <p style="font-family: 'Bitter', sans-serif;top: -100px; font-weight: 700; position: absolute;">Bitter Bold Preload</p>
+        <p style="font-family: 'Bitter', sans-serif;top: -100px; font-weight: 800; position: absolute;">Bitter Extra Bold Preload</p>
+        <p style="font-family: 'Bitter', sans-serif;top: -100px; font-weight: 900; position: absolute;">Bitter Black Preload</p>
+
+        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 100; position: absolute;">Inter Thin Preload</p>
+        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 200; position: absolute;">Inter Extra Light Preload</p>
+        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 300; position: absolute;">Inter Light Preload</p>
+        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 400; position: absolute;">Inter Normal Preload</p>
         <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 500; position: absolute;">Inter Medium Preload</p>
+        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 600; position: absolute;">Inter Semi Bold Preload</p>
         <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 700; position: absolute;">Inter Bold Preload</p>
+        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 800; position: absolute;">Inter Extra Bold Preload</p>
+        <p style="font-family: 'Inter', sans-serif;top: -100px; font-weight: 900; position: absolute;">Inter Black Preload</p>
         <unami-dev></unami-dev>
         <script type="module" src="./esnext.js" defer></script>
     </body>
