@@ -1,4 +1,5 @@
 export { default as Badge } from './components/Badge';
+export { default as Button } from './components/Button';
 
 export { default as ApplicationElement } from './core/ApplicationElement';
 export { default as BaseElement } from './core/BaseElement';
@@ -7,7 +8,15 @@ export { default as DisplayElement } from './core/DisplayElement';
 export { default as PositionElement } from './core/PositionElement';
 export { default as ScrollContainer } from './core/ScrollContainer';
 export { default as SizeElement } from './core/SizeElement';
+
 export { default as ArrayCollection } from './data/ArrayCollection';
+
+export { default as ColorRange } from './design/ColorRange';
+export { default as Colors } from './design/Colors';
+export { default as Design } from './design/Design';
+export { default as Theme } from './design/Theme';
+export { default as TypeScale } from './design/TypeScale';
+export { default as Typography } from './design/Typography';
 
 export { Strings } from './enums/Strings';
 
@@ -21,6 +30,8 @@ export { default as Machine } from './fsm/Machine';
 export { default as State } from './fsm/State';
 
 export { default as IBadge } from './interfaces/components/IBadge';
+export { default as IButton } from './interfaces/components/IButton';
+
 export { default as IBaseElement } from './interfaces/core/IBaseElement';
 export { default as IDisplayContainer } from './interfaces/core/IDisplayContainer';
 export { default as IDisplayElement } from './interfaces/core/IDisplayElement';
@@ -29,6 +40,12 @@ export { default as IScrollContainer } from './interfaces/core/IScrollContainer'
 export { default as ISizeElement } from './interfaces/core/ISizeElement';
 
 export { default as IArrayCollection } from './interfaces/data/IArrayCollection';
+
+export { default as IColorRange } from './interfaces/design/IColorRange';
+export { default as IColors } from './interfaces/design/IColors';
+export { default as ITheme } from './interfaces/design/ITheme';
+export { default as ITypeScale } from './interfaces/design/ITypeScale';
+export { default as ITypography } from './interfaces/design/ITypography';
 
 export { default as IEventDispatcher } from './interfaces/event/IEventDispatcher';
 export { default as IEventListener } from './interfaces/event/IEventListener';
@@ -71,7 +88,9 @@ export { default as LabelElement } from './text/LabelElement';
 export { default as TextElement } from './text/TextElement';
 export { default as TextRenderer } from './text/TextRenderer';
 
+export { ColorType } from './types/ColorType';
 export { CornerType } from './types/CornerType';
+export { FontWeight } from './types/FontWeight';
 export { HorizontalAlign } from './types/HorizontalAlign';
 export { TextAlign } from './types/TextAlign';
 export { VerticalAlign } from './types/VerticalAlign';
