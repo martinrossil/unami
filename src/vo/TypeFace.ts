@@ -13,7 +13,9 @@ import ITypeFace from '../interfaces/vo/ITypeFace';
  *
  * new TypeFace('Inter', 400, 0.727, 0.09, 0.0);
  * new TypeFace('Inter', 500, 0.727, 0.09, 0.0);
- * new TypeFace('Inter', FontWeight.BOLD_700, 0.727, 0.09, 0.0);
+ * new TypeFace('Inter', 700, 0.727, 0.09, 0.0);
+ *
+ * new TypeFace('Bitter', 400, 0.71, 0.03, 0.02);
  *
  * new TypeFace('Eurostile', FontWeight.REGULAR_400, 0.67, 0.1, 0.01);
  * new TypeFace('Eurostile', FontWeight.BOLD_700, 0.67, 0.09, -0.003);
@@ -21,7 +23,7 @@ import ITypeFace from '../interfaces/vo/ITypeFace';
 
 export default class TypeFace extends EventDispatcher implements ITypeFace {
     public static CHANGED = 'TypeFace.CHANGED';
-    public constructor(fontFamily = 'Arial', fontWeight = 400, capHeight = 0.715, offsetX = 0.09, offsetY = 0.015) {
+    public constructor(fontFamily = 'Arial', capHeight = 0.715, offsetX = 0.09, offsetY = 0.015) {
         super();
         this.name = 'TypeFace';
         if (this._fontFamily !== fontFamily) {
@@ -30,11 +32,6 @@ export default class TypeFace extends EventDispatcher implements ITypeFace {
         if (this._capHeight !== capHeight) {
             if (!isNaN(capHeight) && capHeight > 0) {
                 this._capHeight = capHeight;
-            }
-        }
-        if (this._fontWeight !== fontWeight) {
-            if (!isNaN(fontWeight) && fontWeight > 0) {
-                this._fontWeight = fontWeight;
             }
         }
         if (this._offsetX !== offsetX) {
@@ -82,27 +79,6 @@ export default class TypeFace extends EventDispatcher implements ITypeFace {
 
     public get capHeight(): number {
         return this._capHeight;
-    }
-
-    private _fontWeight = 400;
-
-    public set fontWeight(value: number) {
-        if (this._fontWeight === value) {
-            return;
-        }
-        if (isNaN(value) || value < 0) {
-            if (this._fontWeight !== 400) {
-                this._fontWeight = 400;
-                this.notifyChange();
-            }
-            return;
-        }
-        this._fontWeight = value;
-        this.notifyChange();
-    }
-
-    public get fontWeight(): number {
-        return this._fontWeight;
     }
 
     private _offsetX = 0.11;
