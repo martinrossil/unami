@@ -4,6 +4,7 @@ import ILabelElement from '../interfaces/text/ILabelElement';
 import IColor from '../interfaces/vo/IColor';
 import ITypeFace from '../interfaces/vo/ITypeFace';
 import LabelElement from '../text/LabelElement';
+import { FontWeight } from '../types/FontWeight';
 
 export default class Button extends DisplayContainer implements IButton {
     public constructor() {
@@ -23,6 +24,30 @@ export default class Button extends DisplayContainer implements IButton {
             this._labelElement.fontSize = 14;
         }
         return this._labelElement;
+    }
+
+    public set letterSpacing(value: number) {
+        this.labelElement.letterSpacing = value;
+    }
+
+    public get letterSpacing(): number {
+        return this.labelElement.letterSpacing;
+    }
+
+    public set fontSize(value: number) {
+        this.labelElement.fontSize = value;
+    }
+
+    public get fontSize(): number {
+        return this.labelElement.fontSize;
+    }
+
+    public set fontWeight(value: FontWeight) {
+        this.labelElement.fontWeight = value;
+    }
+
+    public get fontWeight(): FontWeight {
+        return this.labelElement.fontWeight;
     }
 
     public set textColor(value: IColor | null) {
