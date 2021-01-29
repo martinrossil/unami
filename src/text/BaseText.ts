@@ -1,7 +1,9 @@
 import DisplayElement from '../core/DisplayElement';
+import ITypeScale from '../interfaces/design/ITypeScale';
 import IBaseText from '../interfaces/text/IBaseText';
 import IColor from '../interfaces/vo/IColor';
 import ITypeFace from '../interfaces/vo/ITypeFace';
+import { FontWeight } from '../types/FontWeight';
 import { TextAlign } from '../types/TextAlign';
 import TypeFace from '../vo/TypeFace';
 import TextRenderer from './TextRenderer';
@@ -32,6 +34,15 @@ export default class BaseText extends DisplayElement implements IBaseText {
         return this.textRenderer.text;
     }
 
+    public set fontWeight(value: FontWeight) {
+        this.textRenderer.fontWeight = value;
+        this.invalidate();
+    }
+
+    public get fontWeight(): FontWeight {
+        return this.textRenderer.fontWeight;
+    }
+
     private _typeFace!: ITypeFace;
 
     public set typeFace(value: ITypeFace) {
@@ -53,9 +64,28 @@ export default class BaseText extends DisplayElement implements IBaseText {
         return this._typeFace;
     }
 
+    private _typeScale!: ITypeScale;
+
+    public set typeScale(value: ITypeScale) {
+        if (this._typeScale === value) {
+            return;
+        }
+        this._typeScale = value;
+        this.textRenderer.fontSize = this._typeScale.fontSize;
+        this.textRenderer.fontWeight = this._typeScale.fontWeight;
+        this.textRenderer.letterSpacing = this._typeScale.letterSpacing;
+        this.typeFace = this._typeScale.typeFace;
+    }
+
+    public get typeScale(): ITypeScale {
+        if (!this._typeScale) {
+            this._typeScale = this.theme.typography.body1;
+        }
+        return this._typeScale;
+    }
+
     private typeFaceChanged(): void {
         this.textRenderer.fontFamily = this.typeFace.fontFamily;
-        this.textRenderer.fontWeight = this.typeFace.fontWeight;
         this.invalidate();
     }
 
