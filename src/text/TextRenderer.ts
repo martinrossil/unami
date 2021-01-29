@@ -2,6 +2,7 @@ import DisplayElement from '../core/DisplayElement';
 import { Strings } from '../enums/Strings';
 import ITextRenderer from '../interfaces/text/ITextRenderer';
 import IColor from '../interfaces/vo/IColor';
+import { FontWeight } from '../types/FontWeight';
 import { TextAlign } from '../types/TextAlign';
 
 export default class TextRenderer extends DisplayElement implements ITextRenderer {
@@ -80,24 +81,17 @@ export default class TextRenderer extends DisplayElement implements ITextRendere
         return this._fontSize;
     }
 
-    private _fontWeight = 400;
+    private _fontWeight: FontWeight = 400;
 
-    public set fontWeight(value: number) {
+    public set fontWeight(value: FontWeight) {
         if (this._fontWeight === value) {
-            return;
-        }
-        if (isNaN(value) || value < 0) {
-            if (this._fontWeight !== 400) {
-                this._fontWeight = 400;
-                this.style.fontWeight = this._fontWeight.toString();
-            }
             return;
         }
         this._fontWeight = value;
         this.style.fontWeight = this._fontWeight.toString();
     }
 
-    public get fontWeight(): number {
+    public get fontWeight(): FontWeight {
         return this._fontWeight;
     }
 
