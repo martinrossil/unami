@@ -1,48 +1,51 @@
-import Badge from './components/Badge';
-import Button from './components/Button';
 import ApplicationElement from './core/ApplicationElement';
-import IBadge from './interfaces/components/IBadge';
-import IButton from './interfaces/components/IButton';
+import ITypeScale from './interfaces/design/ITypeScale';
+import ILabelElement from './interfaces/text/ILabelElement';
 import IUnamiDev from './IUnamiDev';
 import VerticalLayout from './layout/VerticalLayout';
-import Color from './vo/Color';
+import LabelElement from './text/LabelElement';
 import TypeFace from './vo/TypeFace';
 
 export default class UnamiDev extends ApplicationElement implements IUnamiDev {
     public constructor() {
         super();
         this.name = 'UnamiDev';
-        this.layout = new VerticalLayout(32, 'center', 'middle');
+        // this.theme.typography.primary = new TypeFace('Bitter', 0.71, 0.03, 0.02);
+        this.theme.typography.primary = new TypeFace('Inter', 0.727, 0.09, 0.0);
+        this.theme.typography.secondary = new TypeFace('Inter', 0.727, 0.09, 0.0);
+        this.layout = new VerticalLayout(24, 'left', 'top');
+        this.padding = 24;
         window.addEventListener('load', () => {
-            this.addElement(this.button);
-            this.addElement(this.badgeElement);
+            const l: Array<ILabelElement> = [];
+            l.push(this.getLabel(this.theme.typography.headline1));
+            l.push(this.getLabel(this.theme.typography.headline2));
+            l.push(this.getLabel(this.theme.typography.headline3));
+            l.push(this.getLabel(this.theme.typography.headline4));
+            l.push(this.getLabel(this.theme.typography.headline5));
+            l.push(this.getLabel(this.theme.typography.headline6));
+            l.push(this.getLabel(this.theme.typography.subtitle1));
+            l.push(this.getLabel(this.theme.typography.subtitle2));
+            l.push(this.getLabel(this.theme.typography.body1));
+            l.push(this.getLabel(this.theme.typography.body2));
+            l.push(this.getLabel(this.theme.typography.button));
+            l.push(this.getLabel(this.theme.typography.caption));
+            l.push(this.getLabel(this.theme.typography.overline));
+            this.addElements(l);
+        });
+        window.addEventListener('click', () => {
+            //
         });
     }
 
-    private _button!: IButton;
-
-    private get button(): IButton {
-        if (!this._button) {
-            this._button = new Button();
-            this._button.backgroundColor = new Color(217, 91, 60); // Blue 500 hsla(217, 91%, 60%, 1)
-            this._button.label = 'Button Text'; // Blue Gray 900 hsla(222, 47%, 11%, 1)
-            this._button.textColor = new Color(0, 100, 100);
-            this._button.typeFace = new TypeFace('Inter', 500, 0.727, 0.09, 0.0);
-        }
-        return this._button;
+    protected themeChanged(): void {
+        console.log(this.name, 'themChanged', this.theme);
     }
 
-    private _badgeElement!: IBadge;
-
-    private get badgeElement(): IBadge {
-        if (!this._badgeElement) {
-            this._badgeElement = new Badge(); // Green 200 hsla(141, 79%, 85%, 1)
-            this._badgeElement.backgroundColor = new Color(141, 79, 85); // Green 100 hsla(141, 84%, 93%, 1)
-            this._badgeElement.text = 'Success';
-            this._badgeElement.typeFace = new TypeFace('Inter', 700, 0.727, 0.09, 0.0);
-            this._badgeElement.textColor = new Color(142, 72, 29); // green 700 hsla(142, 72%, 29%, 1)
-        }
-        return this._badgeElement;
+    private getLabel(typeScale: ITypeScale): ILabelElement {
+        const l: ILabelElement = new LabelElement();
+        l.typeScale = typeScale;
+        l.text = typeScale.toString();
+        return l;
     }
 }
 customElements.define('unami-dev', UnamiDev);
