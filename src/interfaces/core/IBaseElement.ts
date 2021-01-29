@@ -3,4 +3,5 @@ export default interface IBaseElement {
     name: string;
     connected: boolean;
     visible: boolean;
+    notifyThemeChange: boolean;
 }

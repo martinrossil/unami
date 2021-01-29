@@ -1,10 +1,13 @@
+import Design from '../design/Design';
 import IBaseElement from '../interfaces/core/IBaseElement';
+import ITheme from '../interfaces/design/ITheme';
 
 export default class BaseElement extends HTMLElement implements IBaseElement {
     public constructor() {
         super();
         this.name = 'BaseElement';
         this.invalidate = this.invalidate.bind(this);
+        this.themeChanged = this.themeChanged.bind(this);
     }
 
     public dispatch<Item>(typeArg: string, payload: Item | null = null, bubbles = false): void {
@@ -50,6 +53,33 @@ export default class BaseElement extends HTMLElement implements IBaseElement {
 
     public get visible(): boolean {
         return this._visible;
+    }
+
+    private _notifyThemeChange = false;
+
+    public set notifyThemeChange(value: boolean) {
+        if (this._notifyThemeChange === value) {
+            return;
+        }
+        if (this._notifyThemeChange) {
+            Design.dispatcher.removeEventListener(Design.THEME_CHANGED, this.themeChanged);
+        }
+        this._notifyThemeChange = value;
+        if (this._notifyThemeChange) {
+            Design.dispatcher.addEventListener(Design.THEME_CHANGED, this.themeChanged);
+        }
+    }
+
+    public get notifyThemeChange(): boolean {
+        return this._notifyThemeChange;
+    }
+
+    protected get theme(): ITheme {
+        return Design.theme;
+    }
+
+    protected themeChanged(): void {
+        // override
     }
 }
 customElements.define('base-element', BaseElement);
