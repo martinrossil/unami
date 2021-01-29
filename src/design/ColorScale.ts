@@ -1,8 +1,8 @@
-import IColorRange from '../interfaces/design/IColorRange';
+import IColorScale from '../interfaces/design/IColorScale';
 import IColor from '../interfaces/vo/IColor';
 import Color from '../vo/Color';
 
-export default class ColorRange implements IColorRange {
+export default class ColorScale implements IColorScale {
     public c50: IColor = new Color(0, 0, 98); // Gray 50
     public c100: IColor = new Color(240, 5, 96); // Gray 100
     public c200: IColor = new Color(240, 6, 90); // Gray 200

@@ -1,6 +1,6 @@
 import IColor from '../vo/IColor'
 
-export default interface IColorRange {
+export default interface IColorScale {
     c50: IColor;
     c100: IColor;
     c200: IColor;

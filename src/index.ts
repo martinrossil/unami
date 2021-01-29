@@ -11,7 +11,7 @@ export { default as SizeElement } from './core/SizeElement';
 
 export { default as ArrayCollection } from './data/ArrayCollection';
 
-export { default as ColorRange } from './design/ColorRange';
+export { default as ColorScale } from './design/ColorScale';
 export { default as Colors } from './design/Colors';
 export { default as Design } from './design/Design';
 export { default as Theme } from './design/Theme';
@@ -41,7 +41,7 @@ export { default as ISizeElement } from './interfaces/core/ISizeElement';
 
 export { default as IArrayCollection } from './interfaces/data/IArrayCollection';
 
-export { default as IColorRange } from './interfaces/design/IColorRange';
+export { default as IColorScale } from './interfaces/design/IColorScale';
 export { default as IColors } from './interfaces/design/IColors';
 export { default as ITheme } from './interfaces/design/ITheme';
 export { default as ITypeScale } from './interfaces/design/ITypeScale';

@@ -1,27 +1,27 @@
-import IColorRange from '../interfaces/design/IColorRange';
+import IColorScale from '../interfaces/design/IColorScale';
 import IColors from '../interfaces/design/IColors';
 import Color from '../vo/Color';
-import ColorRange from './ColorRange';
+import ColorScale from './ColorScale';
 
 export default class Colors implements IColors {
     public constructor() {
         this.name = 'Colors';
     }
 
-    private _primary!: IColorRange;
+    private _primary!: IColorScale;
 
-    public get primary(): IColorRange {
+    public get primary(): IColorScale {
         if (!this._primary) {
-            this._primary = new ColorRange();
+            this._primary = new ColorScale();
         }
         return this._primary;
     }
 
-    private _success!: IColorRange;
+    private _success!: IColorScale;
 
-    public get success(): IColorRange {
+    public get success(): IColorScale {
         if (!this._success) {
-            this._success = new ColorRange();
+            this._success = new ColorScale();
             this._success.c50 = new Color(138, 76, 97);
             this._success.c100 = new Color(141, 84, 93);
             this._success.c200 = new Color(141, 79, 85);
@@ -36,11 +36,11 @@ export default class Colors implements IColors {
         return this._success;
     }
 
-    private _danger!: IColorRange;
+    private _danger!: IColorScale;
 
-    public get danger(): IColorRange {
+    public get danger(): IColorScale {
         if (!this._danger) {
-            this._danger = new ColorRange();
+            this._danger = new ColorScale();
             this._danger.c50 = new Color(0, 86, 97);
             this._danger.c100 = new Color(0, 93, 94);
             this._danger.c200 = new Color(0, 96, 89);

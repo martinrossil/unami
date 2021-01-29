@@ -1,7 +1,7 @@
-import IColorRange from './IColorRange';
+import IColorScale from './IColorScale';
 
 export default interface IColors {
-    readonly primary: IColorRange;
-    readonly success: IColorRange;
-    readonly danger: IColorRange;
+    readonly primary: IColorScale;
+    readonly success: IColorScale;
+    readonly danger: IColorScale;
 }
