@@ -2,23 +2,23 @@ import DisplayContainer from '../core/DisplayContainer';
 import IBadge from '../interfaces/components/IBadge';
 import ILabelElement from '../interfaces/text/ILabelElement';
 import IColor from '../interfaces/vo/IColor';
+import ITypeFace from '../interfaces/vo/ITypeFace';
 import LabelElement from '../text/LabelElement';
-import { ColorType } from '../types/ColorType';
+import { FontWeight } from '../types/FontWeight';
 
 export default class Badge extends DisplayContainer implements IBadge {
     public constructor() {
         super();
         this.name = 'BadgeElement';
-        this.backgroundColor = this.getBackgroundColorFromType();
-        this.paddingLeft = this.paddingRight = 8; // Spacing next
+        this.typeFace = this.typography.secondary;
+        this.backgroundColor = this.colors.success.c200;
+        this.textColor = this.theme.colors.success.c700;
+        this.fontSize = 10;
+        this.fontWeight = 700;
+        this.paddingLeft = this.paddingRight = 8;
         this.paddingTop = this.paddingBottom = 4;
-        this.cornerSize = 8; // Then corners
+        this.cornerSize = 8;
         this.addElement(this.labelElement);
-        this.notifyThemeChange = true;
-    }
-
-    protected themeChanged(): void {
-        console.log(this.name, 'themeChanged()');
     }
 
     private _labelElement!: ILabelElement;
@@ -26,9 +26,6 @@ export default class Badge extends DisplayContainer implements IBadge {
     private get labelElement(): ILabelElement {
         if (!this._labelElement) {
             this._labelElement = new LabelElement();
-            this._labelElement.textColor = this.getTextColorFromType();
-            // this._labelElement.typeFace = this.theme.typography.ui.bold700;
-            // this._labelElement.fontSize = this.theme.typography.fontSize.smallest;
         }
         return this._labelElement;
     }
@@ -41,45 +38,36 @@ export default class Badge extends DisplayContainer implements IBadge {
         return this.labelElement.text;
     }
 
-    private _color: ColorType = 'primary';
-
-    public set color(value: ColorType) {
-        if (this._color === value) {
-            return;
-        }
-        this._color = value;
-        this.backgroundColor = this.getBackgroundColorFromType();
-        this.labelElement.textColor = this.getTextColorFromType();
+    public set textColor(value: IColor | null) {
+        this.labelElement.textColor = value;
     }
 
-    public get color(): ColorType {
-        return this._color;
+    public get textColor(): IColor | null {
+        return this.labelElement.textColor;
     }
 
-    private getBackgroundColorFromType(): IColor {
-        if (this.color === 'primary') {
-            return this.theme.colors.primary.c200;
-        }
-        if (this.color === 'success') {
-            return this.theme.colors.success.c200;
-        }
-        if (this.color === 'danger') {
-            return this.theme.colors.danger.c200;
-        }
-        return this.theme.colors.primary.c500;
+    public set fontWeight(value: FontWeight) {
+        this.labelElement.fontWeight = value;
     }
 
-    private getTextColorFromType(): IColor {
-        if (this.color === 'primary') {
-            return this.theme.colors.primary.c700;
-        }
-        if (this.color === 'success') {
-            return this.theme.colors.success.c700;
-        }
-        if (this.color === 'danger') {
-            return this.theme.colors.danger.c700;
-        }
-        return this.theme.colors.primary.c500;
+    public get fontWeight(): FontWeight {
+        return this.labelElement.fontWeight;
+    }
+
+    public set fontSize(value: number) {
+        this.labelElement.fontSize = value;
+    }
+
+    public get fontSize(): number {
+        return this.labelElement.fontSize;
+    }
+
+    public set typeFace(value: ITypeFace) {
+        this.labelElement.typeFace = value;
+    }
+
+    public get typeFace(): ITypeFace {
+        return this.labelElement.typeFace;
     }
 }
 customElements.define('badge-element', Badge);
