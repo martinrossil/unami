@@ -9,7 +9,7 @@ export default class ScrollContainer extends DisplayElement implements IScrollCo
         super();
         this.name = 'ScrollContainer';
         this.scrollEnabled = true;
-        this.style.overflow = 'hidden';
+        this.clip = 'hidden';
         this.addEventListener('invalidate', this.childInvalid);
         this.appendChild(this.outerElement);
     }
@@ -73,7 +73,7 @@ export default class ScrollContainer extends DisplayElement implements IScrollCo
     private get outerElement(): DisplayElement {
         if (!this._outerElement) {
             this._outerElement = new DisplayElement();
-            this._outerElement.style.overflow = 'scroll';
+            this._outerElement.clip = 'scroll';
             this._outerElement.appendChild(this.elementsContainer);
         }
         return this._outerElement;
@@ -107,7 +107,7 @@ export default class ScrollContainer extends DisplayElement implements IScrollCo
         this._scrollEnabled = value;
         this._horizontalScrollEnabled = value;
         this._verticalScrollEnabled = value;
-        this.outerElement.style.overflow = this.scrollEnabled ? 'scroll' : 'hidden';
+        this.outerElement.clip = this.scrollEnabled ? 'scroll' : 'hidden';
         this.invalidate();
     }
 
@@ -123,7 +123,7 @@ export default class ScrollContainer extends DisplayElement implements IScrollCo
         }
         this._horizontalScrollEnabled = value;
         this._scrollEnabled = value && this.verticalScrollEnabled;
-        this.outerElement.style.overflowX = this.horizontalScrollEnabled ? 'scroll' : 'hidden';
+        this.outerElement.clipX = this.horizontalScrollEnabled ? 'scroll' : 'hidden';
         this.invalidate();
     }
 
@@ -139,7 +139,7 @@ export default class ScrollContainer extends DisplayElement implements IScrollCo
         }
         this._verticalScrollEnabled = value;
         this._scrollEnabled = value && this._horizontalScrollEnabled;
-        this.outerElement.style.overflowY = this.verticalScrollEnabled ? 'scroll' : 'hidden';
+        this.outerElement.clipY = this.verticalScrollEnabled ? 'scroll' : 'hidden';
         this.invalidate();
     }
 

@@ -8,6 +8,7 @@ import BlurFilter from '../filters/BlurFilter';
 import Color from '../vo/Color';
 import ShadowFilter from '../filters/ShadowFilter';
 import { Strings } from '../enums/Strings';
+import { ClipType } from '../types/ClipType';
 
 export default class DisplayElement extends SizeElement implements IDisplayElement {
     public constructor() {
@@ -121,6 +122,48 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
 
     public get cornerSize(): number {
         return this._cornerSize;
+    }
+
+    private _clip: ClipType = 'visible';
+
+    public set clip(value: ClipType) {
+        if (this._clip === value) {
+            return;
+        }
+        this._clip = value;
+        this.style.overflow = this._clip;
+    }
+
+    public get clip(): ClipType {
+        return this._clip;
+    }
+
+    private _clipX: ClipType = 'visible';
+
+    public set clipX(value: ClipType) {
+        if (this._clipX === value) {
+            return;
+        }
+        this._clipX = value;
+        this.style.overflowX = this._clipX;
+    }
+
+    public get clipX(): ClipType {
+        return this._clipX;
+    }
+
+    private _clipY: ClipType = 'visible';
+
+    public set clipY(value: ClipType) {
+        if (this._clipY === value) {
+            return;
+        }
+        this._clipY = value;
+        this.style.overflowY = this._clipY;
+    }
+
+    public get clipY(): ClipType {
+        return this._clipY;
     }
 }
 customElements.define('display-element', DisplayElement);
