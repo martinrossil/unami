@@ -1,5 +1,9 @@
+import Badge from './components/Badge';
+import Button from './components/Button';
+import Modal from './components/Modal';
 import ApplicationElement from './core/ApplicationElement';
-import ITypeScale from './interfaces/design/ITypeScale';
+import IBadge from './interfaces/components/IBadge';
+import IButton from './interfaces/components/IButton';
 import ILabelElement from './interfaces/text/ILabelElement';
 import IUnamiDev from './IUnamiDev';
 import VerticalLayout from './layout/VerticalLayout';
@@ -10,42 +14,47 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
     public constructor() {
         super();
         this.name = 'UnamiDev';
-        // this.theme.typography.primary = new TypeFace('Bitter', 0.71, 0.03, 0.02);
-        this.theme.typography.primary = new TypeFace('Inter', 0.727, 0.09, 0.0);
+        this.backgroundColor = this.colors.neutral.c100;
+        this.theme.typography.primary = new TypeFace('Bitter', 0.71, 0.03, 0.02);
         this.theme.typography.secondary = new TypeFace('Inter', 0.727, 0.09, 0.0);
-        this.layout = new VerticalLayout(24, 'left', 'top');
-        this.padding = 24;
+        this.layout = new VerticalLayout(24, 'center', 'middle');
         window.addEventListener('load', () => {
-            const l: Array<ILabelElement> = [];
-            l.push(this.getLabel(this.theme.typography.headline1));
-            l.push(this.getLabel(this.theme.typography.headline2));
-            l.push(this.getLabel(this.theme.typography.headline3));
-            l.push(this.getLabel(this.theme.typography.headline4));
-            l.push(this.getLabel(this.theme.typography.headline5));
-            l.push(this.getLabel(this.theme.typography.headline6));
-            l.push(this.getLabel(this.theme.typography.subtitle1));
-            l.push(this.getLabel(this.theme.typography.subtitle2));
-            l.push(this.getLabel(this.theme.typography.body1));
-            l.push(this.getLabel(this.theme.typography.body2));
-            l.push(this.getLabel(this.theme.typography.button));
-            l.push(this.getLabel(this.theme.typography.caption));
-            l.push(this.getLabel(this.theme.typography.overline));
-            this.addElements(l);
+            this.addElement(new Modal());
         });
         window.addEventListener('click', () => {
             //
         });
     }
 
-    protected themeChanged(): void {
-        console.log(this.name, 'themChanged', this.theme);
+    private _button!: IButton;
+
+    private get button(): IButton {
+        if (!this._button) {
+            this._button = new Button();
+        }
+        return this._button;
     }
 
-    private getLabel(typeScale: ITypeScale): ILabelElement {
-        const l: ILabelElement = new LabelElement();
-        l.typeScale = typeScale;
-        l.text = typeScale.toString();
-        return l;
+    private _labelElement!: ILabelElement;
+
+    private get labelElement(): ILabelElement {
+        if (!this._labelElement) {
+            this._labelElement = new LabelElement();
+            this._labelElement.text = 'Lorem Ipsum';
+            this._labelElement.fontSize = 56;
+            this._labelElement.typeFace = this.theme.typography.primary;
+        }
+        return this._labelElement;
+    }
+
+    private _badge!: IBadge;
+
+    private get badge(): IBadge {
+        if (!this._badge) {
+            this._badge = new Badge();
+            this._badge.text = 'DEFAULT';
+        }
+        return this._badge;
     }
 }
 customElements.define('unami-dev', UnamiDev);
