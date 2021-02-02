@@ -11,7 +11,7 @@ export default [
             sourcemap: true
         },
         plugins: [
-            typescript({ tsconfig: 'tsconfig.build.json' }),
+            typescript(),
             filesize({ showBrotliSize: true })]
     }
 ]

@@ -1,15 +1,14 @@
-/* eslint-disable */
 {
     "compilerOptions": {
-        "declaration": true,
-        "declarationDir": "./dist",
-        "module": "esnext",
         "target": "esnext",
-        "outDir": "./dist",
-        "noImplicitAny": true,
+        "module": "esnext",
+        "moduleResolution": "Node",
         "strict": true,
         "strictNullChecks": true,
-        "moduleResolution": "Node"
+        "noImplicitAny": true,
+        "declaration": true,
+        "declarationDir": "./dist",
+        "outDir": "./dist"
     },
     "include": [
         "src/**/*"
