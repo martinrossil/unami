@@ -10,9 +10,13 @@ export default class Button extends DisplayContainer implements IButton {
     public constructor() {
         super();
         this.name = 'Button';
+        this.typeFace = this.typography.secondary;
+        this.backgroundColor = this.colors.secondary.c500;
+        this.textColor = this.colors.secondary.c100;
         this.paddingLeft = this.paddingRight = 16;
         this.paddingTop = this.paddingBottom = 10.5;
         this.cornerSize = 4;
+        this.label = 'Button';
         this.addElement(this.labelElement);
     }
 
@@ -22,6 +26,7 @@ export default class Button extends DisplayContainer implements IButton {
         if (!this._labelElement) {
             this._labelElement = new LabelElement();
             this._labelElement.fontSize = 14;
+            this._labelElement.fontWeight = 500;
         }
         return this._labelElement;
     }
