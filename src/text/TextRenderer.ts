@@ -9,9 +9,9 @@ export default class TextRenderer extends DisplayElement implements ITextRendere
     public constructor() {
         super();
         this.name = 'TextRenderer';
-        this.style.fontFamily = 'Arial';
-        this.style.fontSize = '16px';
-        this.style.lineHeight = '2';
+        this.fontFamily = 'Arial';
+        this.fontSize = 16;
+        this.lineHeight = 1.2;
     }
 
     private _text = '';
@@ -46,7 +46,7 @@ export default class TextRenderer extends DisplayElement implements ITextRendere
         return this._textColor;
     }
 
-    private _fontFamily = 'Arial';
+    private _fontFamily = '';
 
     public set fontFamily(value: string) {
         if (this._fontFamily === value) {
@@ -60,7 +60,7 @@ export default class TextRenderer extends DisplayElement implements ITextRendere
         return this._fontFamily;
     }
 
-    private _fontSize = 16;
+    private _fontSize = NaN;
 
     public set fontSize(value: number) {
         if (this._fontSize === value) {
@@ -116,14 +116,14 @@ export default class TextRenderer extends DisplayElement implements ITextRendere
         return this._letterSpacing;
     }
 
-    private _lineHeight = 2;
+    private _lineHeight = NaN;
 
     public set lineHeight(value: number) {
         if (this._lineHeight === value) {
             return;
         }
         if (isNaN(value) || value < 0) {
-            this._lineHeight = 2;
+            this._lineHeight = 1.2;
             this.style.lineHeight = this._lineHeight.toString();
             return;
         }

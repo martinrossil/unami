@@ -1,6 +1,8 @@
 import Design from '../design/Design';
 import IBaseElement from '../interfaces/core/IBaseElement';
+import IColors from '../interfaces/design/IColors';
 import ITheme from '../interfaces/design/ITheme';
+import ITypography from '../interfaces/design/ITypography';
 
 export default class BaseElement extends HTMLElement implements IBaseElement {
     public constructor() {
@@ -76,6 +78,14 @@ export default class BaseElement extends HTMLElement implements IBaseElement {
 
     protected get theme(): ITheme {
         return Design.theme;
+    }
+
+    protected get typography(): ITypography {
+        return Design.theme.typography;
+    }
+
+    protected get colors(): IColors {
+        return Design.theme.colors;
     }
 
     protected themeChanged(): void {

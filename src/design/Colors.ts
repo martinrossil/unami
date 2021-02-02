@@ -12,9 +12,38 @@ export default class Colors implements IColors {
 
     public get primary(): IColorScale {
         if (!this._primary) {
-            this._primary = new ColorScale();
+            this._primary = new ColorScale(); // Teal
+            this._primary.c50 = new Color(166, 76, 97);
+            this._primary.c100 = new Color(167, 85, 89);
+            this._primary.c200 = new Color(168, 84, 78);
+            this._primary.c300 = new Color(171, 77, 64);
+            this._primary.c400 = new Color(172, 66, 50);
+            this._primary.c500 = new Color(173, 80, 40);
+            this._primary.c600 = new Color(175, 84, 32);
+            this._primary.c700 = new Color(175, 77, 26);
+            this._primary.c800 = new Color(176, 69, 22);
+            this._primary.c900 = new Color(176, 61, 19);
         }
         return this._primary;
+    }
+
+    private _secondary!: IColorScale;
+
+    public get secondary(): IColorScale {
+        if (!this._secondary) {
+            this._secondary = new ColorScale(); // Pink
+            this._secondary.c50 = new Color(327, 73, 97);
+            this._secondary.c100 = new Color(326, 78, 95);
+            this._secondary.c200 = new Color(326, 85, 90);
+            this._secondary.c300 = new Color(327, 87, 82);
+            this._secondary.c400 = new Color(329, 86, 70);
+            this._secondary.c500 = new Color(330, 81, 60);
+            this._secondary.c600 = new Color(333, 71, 51);
+            this._secondary.c700 = new Color(335, 78, 42);
+            this._secondary.c800 = new Color(336, 74, 35);
+            this._secondary.c900 = new Color(336, 69, 30);
+        }
+        return this._secondary;
     }
 
     private _success!: IColorScale;
@@ -53,6 +82,15 @@ export default class Colors implements IColors {
             this._danger.c900 = new Color(0, 63, 31);
         }
         return this._danger;
+    }
+
+    private _neutral!: IColorScale;
+
+    public get neutral(): IColorScale {
+        if (!this._neutral) {
+            this._neutral = new ColorScale();
+        }
+        return this._neutral;
     }
 
     public name = '';

@@ -4,7 +4,7 @@ import IColor from '../interfaces/vo/IColor';
 import Color from '../vo/Color';
 
 export default class BoxShadowFilter extends EventDispatcher implements IBoxShadowFilter {
-    public constructor(x = 0, y = 4, blur = 8, spread = 0, color: IColor = new Color(0, 0, 0, 0.6), inset = false) {
+    public constructor(x = 0, y = 4, blur = 8, spread = 0, color: IColor = new Color(0, 0, 0, 0.3), inset = false) {
         super();
         this.name = 'BoxShadowFilter';
         this.colorChanged = this.colorChanged.bind(this);

@@ -5,6 +5,7 @@ export default class LabelElement extends BaseText implements ILabelElement {
     public constructor() {
         super();
         this.name = 'LabelElement';
+        this.lineHeight = 2;
         this.textRenderer.style.whiteSpace = 'nowrap';
         this.textRenderer.style.textOverflow = 'ellipsis';
         this.textRenderer.style.overflow = 'hidden';

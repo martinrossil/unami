@@ -1,5 +1,4 @@
 import DisplayElement from '../core/DisplayElement';
-import ITypeScale from '../interfaces/design/ITypeScale';
 import IBaseText from '../interfaces/text/IBaseText';
 import IColor from '../interfaces/vo/IColor';
 import ITypeFace from '../interfaces/vo/ITypeFace';
@@ -12,7 +11,6 @@ export default class BaseText extends DisplayElement implements IBaseText {
     public constructor() {
         super();
         this.name = 'BaseText';
-        this.typeFaceChanged = this.typeFaceChanged.bind(this);
         this.appendChild(this.textRenderer as unknown as Node);
     }
 
@@ -46,47 +44,19 @@ export default class BaseText extends DisplayElement implements IBaseText {
     private _typeFace!: ITypeFace;
 
     public set typeFace(value: ITypeFace) {
-        if (this._typeFace !== value) {
-            if (this._typeFace) {
-                this._typeFace.removeEventListener(TypeFace.CHANGED, this.typeFaceChanged);
-            }
-            this._typeFace = value;
-            this._typeFace.addEventListener(TypeFace.CHANGED, this.typeFaceChanged);
-            this.typeFaceChanged();
+        if (this._typeFace === value) {
+            return;
         }
+        this._typeFace = value;
+        this.textRenderer.fontFamily = this._typeFace.fontFamily;
+        this.invalidate();
     }
 
     public get typeFace(): ITypeFace {
         if (!this._typeFace) {
             this._typeFace = new TypeFace();
-            this._typeFace.addEventListener(TypeFace.CHANGED, this.typeFaceChanged);
         }
         return this._typeFace;
-    }
-
-    private _typeScale!: ITypeScale;
-
-    public set typeScale(value: ITypeScale) {
-        if (this._typeScale === value) {
-            return;
-        }
-        this._typeScale = value;
-        this.textRenderer.fontSize = this._typeScale.fontSize;
-        this.textRenderer.fontWeight = this._typeScale.fontWeight;
-        this.textRenderer.letterSpacing = this._typeScale.letterSpacing;
-        this.typeFace = this._typeScale.typeFace;
-    }
-
-    public get typeScale(): ITypeScale {
-        if (!this._typeScale) {
-            this._typeScale = this.theme.typography.body1;
-        }
-        return this._typeScale;
-    }
-
-    private typeFaceChanged(): void {
-        this.textRenderer.fontFamily = this.typeFace.fontFamily;
-        this.invalidate();
     }
 
     public set fontSize(value: number) {
