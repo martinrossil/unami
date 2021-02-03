@@ -15,8 +15,8 @@ export default class Badge extends DisplayContainer implements IBadge {
         this.textColor = this.theme.colors.success.c700;
         this.fontSize = 10;
         this.fontWeight = 700;
-        this.paddingLeft = this.paddingRight = 8;
-        this.paddingTop = this.paddingBottom = 4;
+        this.paddingX = 8;
+        this.paddingY = 4;
         this.cornerSize = 8;
         this.addElement(this.labelElement);
     }
