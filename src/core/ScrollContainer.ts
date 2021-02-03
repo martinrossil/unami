@@ -8,7 +8,7 @@ export default class ScrollContainer extends DisplayElement implements IScrollCo
     public constructor() {
         super();
         this.name = 'ScrollContainer';
-        this.scrollEnabled = true;
+        this.verticalScrollEnabled = true;
         this.clip = 'hidden';
         this.addEventListener('invalidate', this.childInvalid);
         this.appendChild(this.outerElement);
@@ -25,17 +25,25 @@ export default class ScrollContainer extends DisplayElement implements IScrollCo
     protected validate(): void {
         super.validate();
         this.invalidateInternalSize();
-        this.updateOuterElementSize();
+        this.updateChildrenSizes();
     }
 
-    protected updateOuterElementSize(): void {
+    private updateChildrenSizes(): void {
         this.outerElement.size(this.measuredWidth + this.scrollBarWidth, this.measuredHeight + this.scrollBarHeight);
+        if (!this.horizontalScrollEnabled && !this.verticalScrollEnabled) {
+            this.elementsContainer.size(this.measuredWidth, this.measuredHeight);
+            return;
+        }
+        if (!this.horizontalScrollEnabled && this.verticalScrollEnabled) {
+            this.elementsContainer.width = this.measuredWidth;
+            return;
+        }
+        if (this.horizontalScrollEnabled && !this.verticalScrollEnabled) {
+            this.elementsContainer.height = this.measuredHeight;
+        }
     }
 
     private get scrollBarWidth(): number {
-        if (!this.verticalScrollEnabled) {
-            return 0;
-        }
         const width = this.outerElement.offsetWidth - this.outerElement.clientWidth;
         // Just to be sure, we check if clientWidth is above 17, look below for IE11 bug
         if (width > 17) {
@@ -45,9 +53,6 @@ export default class ScrollContainer extends DisplayElement implements IScrollCo
     }
 
     private get scrollBarHeight(): number {
-        if (!this.horizontalScrollEnabled) {
-            return 0;
-        }
         const height = this.outerElement.offsetHeight - this.outerElement.clientHeight;
         // IE11 has a bug that will return a wrong clientHeight, so we check if it'< above 17 here
         if (height > 17) {
@@ -96,6 +101,14 @@ export default class ScrollContainer extends DisplayElement implements IScrollCo
 
     public addElements(elements: IDisplayElement[]): void {
         this.elementsContainer.addElements(elements);
+    }
+
+    public removeElement(element: IDisplayElement): void {
+        this.elementsContainer.removeElement(element);
+    }
+
+    public removeElements(): void {
+        this.elementsContainer.removeElements();
     }
 
     private _scrollEnabled = false;
@@ -193,6 +206,22 @@ export default class ScrollContainer extends DisplayElement implements IScrollCo
 
     public get paddingBottom(): number {
         return this.elementsContainer.paddingBottom;
+    }
+
+    public set paddingX(value: number) {
+        this.elementsContainer.paddingX = value;
+    }
+
+    public get paddingX(): number {
+        return this.elementsContainer.paddingX;
+    }
+
+    public set paddingY(value: number) {
+        this.elementsContainer.paddingY = value;
+    }
+
+    public get paddingY(): number {
+        return this.elementsContainer.paddingY;
     }
 }
 customElements.define('scroll-container', ScrollContainer);
