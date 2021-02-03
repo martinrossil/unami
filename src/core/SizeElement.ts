@@ -76,7 +76,7 @@ export default class SizeElement extends PositionElement implements ISizeElement
             if (this._minWidth !== this.maxWidth) {
                 this._minWidth = this.maxWidth;
             }
-            if (this.width < this._minWidth) {
+            if (isNaN(this.width) || this.width < this._minWidth) {
                 this.width = this._minWidth;
             }
             return;
@@ -85,7 +85,7 @@ export default class SizeElement extends PositionElement implements ISizeElement
             return;
         }
         this._minWidth = value;
-        if (this.width < this._minWidth) {
+        if (isNaN(this.width) || this.width < this._minWidth) {
             this.width = this._minWidth;
         }
     }
@@ -152,13 +152,13 @@ export default class SizeElement extends PositionElement implements ISizeElement
             if (this._maxWidth !== this.minWidth) {
                 this._maxWidth = this.minWidth;
             }
-            if (this.width > this._maxWidth) {
+            if (!isNaN(this.width) && this.width > this._maxWidth) {
                 this.width = this._maxWidth;
             }
             return;
         }
         this._maxWidth = value;
-        if (this.width > this._maxWidth) {
+        if (!isNaN(this.width) && this.width > this._maxWidth) {
             this.width = this._maxWidth;
         }
     }
@@ -183,13 +183,13 @@ export default class SizeElement extends PositionElement implements ISizeElement
             if (this._minHeight !== this.maxHeight) {
                 this._minHeight = this.maxHeight;
             }
-            if (this.height < this._minHeight) {
+            if (isNaN(this.height) || this.height < this._minHeight) {
                 this.height = this._minHeight;
             }
             return;
         }
         this._minHeight = value;
-        if (this.height < this._minHeight) {
+        if (isNaN(this.height) || this.height < this._minHeight) {
             this.height = this._minHeight;
         }
     }
@@ -256,13 +256,13 @@ export default class SizeElement extends PositionElement implements ISizeElement
             if (this._maxHeight !== this.minHeight) {
                 this._maxHeight = this.minHeight;
             }
-            if (this.height > this._maxHeight) {
+            if (!isNaN(this.height) && this.height > this._maxHeight) {
                 this.height = this._maxHeight;
             }
             return;
         }
         this._maxHeight = value;
-        if (this.height > this._maxHeight) {
+        if (!isNaN(this.height) && this.height > this._maxHeight) {
             this.height = this._maxHeight;
         }
     }
