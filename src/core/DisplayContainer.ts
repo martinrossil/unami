@@ -54,19 +54,33 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
         this.invalidate();
     }
 
+    public removeElement(element: ISizeElement): void {
+        const start: number = this.elements.indexOf(element as ISizeElement & IPositionElement);
+        this.elements.splice(start, 1);
+        this.removeChild(element as unknown as Node);
+        this.invalidate();
+    }
+
+    public removeElements(): void {
+        if (this.elements.length > 0) {
+            while (this.elements.length > 0) {
+                const element: ISizeElement & IPositionElement = this.elements.splice(0, 1)[0];
+                this.removeChild(element as unknown as Node);
+            }
+            this.invalidate();
+        }
+    }
+
     protected updateInternalSize(): void {
-        // super.updateInternalSize();
         const size: ISize = this.layout.getInternalSize(this, this.elements);
         this.internalSize(size.width, size.height);
     }
 
     protected updateInternalWidth(): void {
-        // super.updateInternalWidth();
         this.internalWidth = this.layout.getInternalWidth(this, this.elements);
     }
 
     protected updateInternalHeight(): void {
-        // super.updateInternalHeight();
         this.internalHeight = this.layout.getInternalHeight(this, this.elements);
     }
 
@@ -192,6 +206,56 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
 
     public get paddingLeft(): number {
         return this._paddingLeft;
+    }
+
+    private _paddingX = 0;
+
+    public set paddingX(value: number) {
+        if (this._paddingX === value) {
+            return;
+        }
+        if (isNaN(value) || value < 0) {
+            if (this._paddingX !== 0) {
+                this._paddingX = 0;
+                this._paddingLeft = 0;
+                this._paddingRight = 0;
+                this.invalidate();
+            }
+            return;
+        }
+        this._paddingX = value;
+        this._paddingLeft = value;
+        this._paddingRight = value;
+        this.invalidate();
+    }
+
+    public get paddingX(): number {
+        return this._paddingX;
+    }
+
+    private _paddingY = 0;
+
+    public set paddingY(value: number) {
+        if (this._paddingY === value) {
+            return;
+        }
+        if (isNaN(value) || value < 0) {
+            if (this._paddingY !== 0) {
+                this._paddingY = 0;
+                this._paddingTop = 0;
+                this._paddingBottom = 0;
+                this.invalidate();
+            }
+            return;
+        }
+        this._paddingY = value;
+        this._paddingTop = value;
+        this._paddingBottom = value;
+        this.invalidate();
+    }
+
+    public get paddingY(): number {
+        return this._paddingY;
     }
 }
 customElements.define('display-container', DisplayContainer);
