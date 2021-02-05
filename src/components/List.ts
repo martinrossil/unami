@@ -1,12 +1,13 @@
 import ScrollContainer from '../core/ScrollContainer';
 import IList from '../interfaces/components/IList';
-import IListItemRenderer from '../interfaces/components/IListItemRenderer';
+import IItemRenderer from '../interfaces/components/IItemRenderer';
 import IArrayCollection from '../interfaces/data/IArrayCollection';
 import IEventListener from '../interfaces/event/IEventListener';
-import ListItemRenderer from './ListItemRenderer';
+import { ItemRendererClass } from '../types/ItemRendererClass';
+import ItemRenderer from './ItemRenderer';
 
 export default class List<Item> extends ScrollContainer implements IList<Item> {
-    private listItemRendererLookup: Map<Item, IListItemRenderer<Item> | undefined> = new Map();
+    private listItemRendererLookup: Map<Item, IItemRenderer<Item> | undefined> = new Map();
     public constructor() {
         super();
         this.name = 'List';
@@ -14,12 +15,22 @@ export default class List<Item> extends ScrollContainer implements IList<Item> {
         this.itemsAdded = this.itemsAdded.bind(this);
         this.itemRemoved = this.itemRemoved.bind(this);
         this.reset = this.reset.bind(this);
+        this.addEventListener('itemRendererTriggered', this.itemRenderTriggered as IEventListener);
+    }
+
+    private itemRenderTriggered(e: CustomEvent<Item>): void {
+        e.stopImmediatePropagation();
+        if (this.dataProvider) {
+            this.selectedIndex = this.dataProvider.getItemIndex(e.detail);
+            this.dispatch('selectedItemChanged', e.detail);
+            this.dispatch('selectedIndexChanged', this.selectedIndex);
+        }
     }
 
     private addItemRenderers(items: Item[]): void {
-        const listItemRenderers: IListItemRenderer<Item>[] = [];
+        const listItemRenderers: IItemRenderer<Item>[] = [];
         for (const item of items) {
-            const listItemRenderer: IListItemRenderer<Item> = new this.ListItemRenderer();
+            const listItemRenderer: IItemRenderer<Item> = new this.ItemRendererClass();
             listItemRenderer.data = item;
             this.listItemRendererLookup.set(item, listItemRenderer);
             listItemRenderers.push(listItemRenderer);
@@ -29,7 +40,7 @@ export default class List<Item> extends ScrollContainer implements IList<Item> {
     }
 
     private itemAdded(e: CustomEvent<Item>): void {
-        const itemRenderer: IListItemRenderer<Item> = new this.ListItemRenderer();
+        const itemRenderer: IItemRenderer<Item> = new this.ItemRendererClass();
         itemRenderer.data = e.detail;
         this.listItemRendererLookup.set(e.detail, itemRenderer);
         this.addElement(itemRenderer);
@@ -41,7 +52,7 @@ export default class List<Item> extends ScrollContainer implements IList<Item> {
     }
 
     private itemRemoved(e: CustomEvent<Item>): void {
-        const itemRenderer: IListItemRenderer<Item> | undefined = this.listItemRendererLookup.get(e.detail);
+        const itemRenderer: IItemRenderer<Item> | undefined = this.listItemRendererLookup.get(e.detail);
         if (itemRenderer) {
             this.removeElement(itemRenderer);
         }
@@ -57,31 +68,33 @@ export default class List<Item> extends ScrollContainer implements IList<Item> {
     }
 
     private updateSelectedItemRenderer(): void {
-        this.listItemRendererLookup.forEach((itemRenderer: IListItemRenderer<Item> | undefined) => {
+        if (this.selectedItem) {
+            const itemRenderer: IItemRenderer<Item> | undefined = this.listItemRendererLookup.get(this.selectedItem);
             if (itemRenderer) {
-                itemRenderer.selected = false;
+                this.selectedItemRenderer = itemRenderer;
+                return;
             }
-        });
-        if (this.selectedItemRenderer) {
-            this.selectedItemRenderer.selected = true;
-        }
-    }
-
-    private _ListItemRenderer!: new () => IListItemRenderer<Item>;
-
-    public set ListItemRenderer(value: new () => IListItemRenderer<Item>) {
-        if (this._ListItemRenderer === value) {
+            this.selectedItemRenderer = undefined;
             return;
         }
-        this._ListItemRenderer = value;
+        this.selectedItemRenderer = undefined;
+    }
+
+    private _ItemRendererClass!: ItemRendererClass<Item>;
+
+    public set ItemRendererClass(value: ItemRendererClass<Item>) {
+        if (this._ItemRendererClass === value) {
+            return;
+        }
+        this._ItemRendererClass = value;
         this.reset();
     }
 
-    public get ListItemRenderer(): new () => IListItemRenderer<Item> {
-        if (!this._ListItemRenderer) {
-            this._ListItemRenderer = ListItemRenderer;
+    public get ItemRendererClass(): ItemRendererClass<Item> {
+        if (!this._ItemRendererClass) {
+            this._ItemRendererClass = ItemRenderer;
         }
-        return this._ListItemRenderer;
+        return this._ItemRendererClass;
     }
 
     private _dataProvider: IArrayCollection<Item> | null = null;
@@ -110,18 +123,30 @@ export default class List<Item> extends ScrollContainer implements IList<Item> {
         return this._dataProvider;
     }
 
-    private get selectedItemRenderer(): IListItemRenderer<Item> | undefined {
-        if (this.selectedItem) {
-            return this.listItemRendererLookup.get(this.selectedItem);
-        }
-        return undefined;
-    }
-
-    public get selectedItem(): Item | null {
+    private get selectedItem(): Item | null {
         if (this.dataProvider) {
             return this.dataProvider.getItemAt(this.selectedIndex);
         }
         return null;
+    }
+
+    private _selectedItemRenderer: IItemRenderer<Item> | undefined = undefined;
+
+    private set selectedItemRenderer(value: IItemRenderer<Item> | undefined) {
+        if (this._selectedItemRenderer === value) {
+            return;
+        }
+        if (this._selectedItemRenderer) {
+            this._selectedItemRenderer.selected = false;
+        }
+        this._selectedItemRenderer = value;
+        if (this._selectedItemRenderer) {
+            this._selectedItemRenderer.selected = true;
+        }
+    }
+
+    private get selectedItemRenderer(): IItemRenderer<Item> | undefined {
+        return this._selectedItemRenderer;
     }
 
     private _selectedIndex = NaN;
