@@ -31,7 +31,7 @@ export default class ArrayCollection<Item> extends EventDispatcher implements IA
     }
 
     public getItemAt(index: number): Item | null {
-        if (index < 0) {
+        if (isNaN(index) || index < 0) {
             return null;
         }
         if (index < this.source.length) {
