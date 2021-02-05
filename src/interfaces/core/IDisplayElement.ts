@@ -13,4 +13,5 @@ export default interface IDisplayElement extends ISizeElement {
     clip: ClipType;
     clipX: ClipType;
     clipY: ClipType;
+    enabled: boolean;
 }

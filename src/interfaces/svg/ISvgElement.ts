@@ -6,5 +6,6 @@ import IRectangle from '../vo/IRectangle';
 export default interface ISvgElement extends ISizeElement {
     viewBox: IRectangle | null;
     visible: boolean;
+    enabled: boolean;
     addFilter(filter: BlurFilter | ShadowFilter): void;
 }

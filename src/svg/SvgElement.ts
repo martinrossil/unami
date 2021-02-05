@@ -8,6 +8,7 @@ export default class SvgElement extends SizeElement implements ISvgElement {
     public constructor() {
         super();
         this.name = 'SvgElement';
+        this.enabled = false;
         this.appendChild(this.svg);
     }
 
@@ -74,6 +75,26 @@ export default class SvgElement extends SizeElement implements ISvgElement {
 
     public get viewBox(): IRectangle | null {
         return this._viewBox;
+    }
+
+    private _enabled = true;
+
+    public set enabled(value: boolean) {
+        if (this._enabled === value) {
+            return;
+        }
+        this._enabled = value;
+        if (value) {
+            this.style.pointerEvents = '';
+            this.style.userSelect = 'auto';
+        } else {
+            this.style.pointerEvents = 'none';
+            this.style.userSelect = 'none';
+        }
+    }
+
+    public get enabled(): boolean {
+        return this._enabled;
     }
 }
 customElements.define('svg-element', SvgElement);

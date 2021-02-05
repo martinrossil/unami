@@ -165,5 +165,25 @@ export default class DisplayElement extends SizeElement implements IDisplayEleme
     public get clipY(): ClipType {
         return this._clipY;
     }
+
+    private _enabled = true;
+
+    public set enabled(value: boolean) {
+        if (this._enabled === value) {
+            return;
+        }
+        this._enabled = value;
+        if (value) {
+            this.style.pointerEvents = '';
+            this.style.userSelect = 'auto';
+        } else {
+            this.style.pointerEvents = 'none';
+            this.style.userSelect = 'none';
+        }
+    }
+
+    public get enabled(): boolean {
+        return this._enabled;
+    }
 }
 customElements.define('display-element', DisplayElement);
