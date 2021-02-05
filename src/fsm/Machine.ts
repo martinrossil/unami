@@ -14,7 +14,6 @@ export default class Machine<Host> {
     protected send(e: Event): void {
         const state = this.current.getState(e.type);
         if (this.current !== state) {
-            console.log('state change old', this.current.name, e.type, 'new', state.name);
             if (this.current.exit) {
                 this.current.exit(e);
             }
