@@ -113,6 +113,7 @@ export { default as TypeFace } from './vo/TypeFace';
 
 export { HeroIcon } from './zapp/enums/HeroIcon';
 export { default as INavigationItem } from './zapp/interfaces/vo/INavigationItem';
+export { default as BottomNavigationItemRenderer } from './zapp/navigation/BottomNavigationItemRenderer';
 export { default as NavigationItemRenderer } from './zapp/navigation/NavigationItemRenderer';
 export { default as NavigationItem } from './zapp/vo/NavigationItem';
 
