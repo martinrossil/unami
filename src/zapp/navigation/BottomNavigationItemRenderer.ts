@@ -2,23 +2,29 @@ import ItemRenderer from '../../components/ItemRenderer';
 import IPathElement from '../../interfaces/svg/IPathElement';
 import ILabelElement from '../../interfaces/text/ILabelElement';
 import IPoint from '../../interfaces/vo/IPoint';
-import HorizontalLayout from '../../layout/HorizontalLayout';
+import VerticalLayout from '../../layout/VerticalLayout';
 import PathElement from '../../svg/PathElement';
 import LabelElement from '../../text/LabelElement';
 import Color from '../../vo/Color';
 import INavigationItem from '../interfaces/vo/INavigationItem';
 
-export default class NavigationItemRenderer extends ItemRenderer<INavigationItem> {
+export default class BottomNavigationItemRenderer extends ItemRenderer<INavigationItem> {
     public constructor() {
         super();
-        this.name = 'NavigationItemRenderer';
-        this.height = 40;
-        this.paddingX = 8;
-        this.cornerSize = 4;
+        this.name = 'BottomNavigationItemRenderer';
+        this.height = 56;
         this.percentWidth = 100;
-        this.layout = new HorizontalLayout(16, 'left', 'middle');
+        this.paddingY = 6;
+        this.layout = new VerticalLayout(4, 'center');
         this.addElement(this.pathElement);
         this.addElement(this.labelElement);
+    }
+
+    protected dataChanged(): void {
+        if (this.data) {
+            this.labelElement.text = this.data.text;
+            this.pathElement.pathData = this.data.icon;
+        }
     }
 
     public initial(): void {
@@ -46,13 +52,6 @@ export default class NavigationItemRenderer extends ItemRenderer<INavigationItem
         this.backgroundColor = null;
     }
 
-    protected dataChanged(): void {
-        if (this.data) {
-            this.labelElement.text = this.data.text;
-            this.pathElement.pathData = this.data.icon;
-        }
-    }
-
     private _pathElement!: IPathElement;
 
     private get pathElement(): IPathElement {
@@ -75,10 +74,9 @@ export default class NavigationItemRenderer extends ItemRenderer<INavigationItem
             this._labelElement.typeFace = this.typography.secondary;
             this._labelElement.fontSize = 14;
             this._labelElement.fontWeight = 500;
-            this._labelElement.percentWidth = 100;
             this._labelElement.textColor = this.colors.primary.c300;
         }
         return this._labelElement;
     }
 }
-customElements.define('navigation-item-renderer', NavigationItemRenderer);
+customElements.define('bottom-navigation-item-renderer', BottomNavigationItemRenderer);
