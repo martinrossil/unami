@@ -2,11 +2,15 @@ import Badge from './components/Badge';
 import Button from './components/Button';
 import List from './components/List';
 import ApplicationElement from './core/ApplicationElement';
+import DisplayElement from './core/DisplayElement';
+import LinkContainer from './core/LinkContainer';
 import ArrayCollection from './data/ArrayCollection';
 import BoxShadowFilter from './filters/BoxShadowFilter';
 import IBadge from './interfaces/components/IBadge';
 import IButton from './interfaces/components/IButton';
 import IList from './interfaces/components/IList';
+import IDisplayElement from './interfaces/core/IDisplayElement';
+import ILinkContainer from './interfaces/core/ILinkContainer';
 import IArrayCollection from './interfaces/data/IArrayCollection';
 import IEventListener from './interfaces/event/IEventListener';
 import ILabelElement from './interfaces/text/ILabelElement';
@@ -26,18 +30,19 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
     public constructor() {
         super();
         this.name = 'UnamiDev';
-        this.backgroundColor = new Color(218, 60, 8);
-        // this.backgroundColor = this.colors.neutral.c100;
+        // this.backgroundColor = new Color(218, 60, 8);
+        this.backgroundColor = this.colors.neutral.c100;
         // this.theme.typography.primary = new TypeFace('Bitter', 0.71, 0.03, 0.02);
         this.theme.typography.primary = new TypeFace('Eurostile Extended', 0.68, 0.09, 0.025);
         this.theme.typography.secondary = new TypeFace('Inter', 0.727, 0.09, 0.0);
         // this.theme.typography.secondary = new TypeFace('Eurostile', 0.67, 0.06, 0.01);
-        this.layout = new VerticalLayout(200, 'center', 'middle');
+        this.layout = new VerticalLayout(0, 'center', 'middle');
         window.addEventListener('load', () => {
             // this.addElement(this.list);
-            this.addElement(this.bottomNavigationList);
+            // this.addElement(this.bottomNavigationList);
             // this.addElement(this.labelElement);
             // this.addElement(this.labelElement2);
+            this.addElement(this.linkContainer);
         });
         window.addEventListener('click', () => {
             // this.list.dataProvider = this.navigationItems;
@@ -46,6 +51,31 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         this.addEventListener('triggered', (e: Event) => {
             console.log(this.name, e.type);
         });
+    }
+
+    private _linkContainer!: ILinkContainer;
+
+    private get linkContainer(): ILinkContainer {
+        if (!this._linkContainer) {
+            this._linkContainer = new LinkContainer();
+            this._linkContainer.href = '/about';
+            this._linkContainer.addElement(this.box);
+        }
+        return this._linkContainer;
+    }
+
+    private _box!: IDisplayElement;
+
+    private get box(): IDisplayElement {
+        if (!this._box) {
+            this._box = new DisplayElement();
+            this._box.size(200, 200);
+            this._box.backgroundColor = new Color(0, 0, 100);
+            this._box.addFilter(new BoxShadowFilter(0, 4, 6, -1, new Color(0, 0, 0, 0.1)));
+            this._box.addFilter(new BoxShadowFilter(0, 2, 4, -1, new Color(0, 0, 0, 0.06)));
+            this._box.cornerSize = 16;
+        }
+        return this._box;
     }
 
     private selectedItemChanged(e: CustomEvent<INavigationItem>): void {
