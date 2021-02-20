@@ -36,7 +36,7 @@ export default class DisplayContainer extends DisplayElement implements IDisplay
         this.invalidate();
     }
 
-    private elements: Array<ISizeElement & IPositionElement> = [];
+    protected elements: Array<ISizeElement & IPositionElement> = [];
 
     public addElement(element: ISizeElement): void {
         this.elements.push(element as ISizeElement & IPositionElement);
