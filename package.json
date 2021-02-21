@@ -16,7 +16,7 @@
     "dev": "rollup -c rollup.development.js --watch",
     "build": "rollup -c rollup.build.js",
     "build:public": "rollup -c rollup.production.js",
-    "public": "live-server --open=./public"
+    "public": "live-server --open=./public --entry-file=./public/index.html"
   },
   "repository": {
     "type": "git",

@@ -10,7 +10,8 @@ export default [{
             resolve(),
             serve({
                 contentBase: 'development',
-                open: true
+                open: true,
+                historyApiFallback: true
             }),
             livereload()
         ],
