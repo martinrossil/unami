@@ -37,6 +37,21 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         this.theme.typography.secondary = new TypeFace('Inter', 0.727, 0.09, 0.0);
         // this.theme.typography.secondary = new TypeFace('Eurostile', 0.67, 0.06, 0.01);
         this.layout = new VerticalLayout(0, 'center', 'middle');
+        window.addEventListener('popstate', (e: PopStateEvent) => {
+            console.log(e.state, window.location.pathname);
+        });
+        document.addEventListener('click', (e: Event) => {
+            console.log(e.target);
+            const target: Node | null = this.getATagFromTarget(e.target);
+            if (target instanceof HTMLAnchorElement) {
+                e.preventDefault();
+                const path = target.pathname;
+                if (path !== window.location.pathname) {
+                    history.pushState(null, path, path);
+                    document.title = path;
+                }
+            }
+        });
         window.addEventListener('load', () => {
             // this.addElement(this.list);
             // this.addElement(this.bottomNavigationList);
@@ -53,12 +68,25 @@ export default class UnamiDev extends ApplicationElement implements IUnamiDev {
         });
     }
 
+    private getATagFromTarget(target: EventTarget | null): HTMLAnchorElement | null {
+        if (target instanceof HTMLAnchorElement) {
+            return target;
+        }
+        if (target instanceof HTMLDocument) {
+            return null;
+        }
+        if (target) {
+            return this.getATagFromTarget((target as Node).parentNode);
+        }
+        return null;
+    }
+
     private _linkContainer!: ILinkContainer;
 
     private get linkContainer(): ILinkContainer {
         if (!this._linkContainer) {
             this._linkContainer = new LinkContainer();
-            this._linkContainer.href = '/about';
+            this._linkContainer.href = '/products/shoe123';
             this._linkContainer.addElement(this.box);
         }
         return this._linkContainer;
