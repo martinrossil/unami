@@ -5,5 +5,6 @@ export default interface IBaseElement extends IEventDispatcher {
     name: string;
     connected: boolean;
     visible: boolean;
+    enabled: boolean;
     notifyThemeChange: boolean;
 }
