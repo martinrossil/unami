@@ -9,9 +9,9 @@ import ISizeElement from './ISizeElement';
 export default interface IDisplayElement extends ISizeElement {
     backgroundColor: IColor | ILinearGradient | null;
     cornerSize: number;
-    addFilter(filter: BlurFilter | BoxShadowFilter | ShadowFilter): void;
     clip: ClipType;
     clipX: ClipType;
     clipY: ClipType;
     enabled: boolean;
+    addFilter(filter: BlurFilter | BoxShadowFilter | ShadowFilter): void;
 }
